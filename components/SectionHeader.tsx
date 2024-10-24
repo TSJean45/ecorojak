@@ -7,8 +7,8 @@ interface SectionHeaderProps {
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ title }) => {
   return (
-    <View className="py-2 px-4 bg-gray-200">
-      <Text className="text-lg font-bold text-gray-800">{title}</Text>
+    <View className="px-4">
+      <Text className="text-xl font-bold text-black">{title}</Text>
     </View>
   );
 };
