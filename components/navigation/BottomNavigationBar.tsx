@@ -36,7 +36,7 @@ export default function BottomNavigationBar() {
             className={`flex-1 items-center justify-center`}
           >
             {tab.key === "location" ? (
-              <View className="absolute bottom-[-38px]">
+              <View className="absolute bottom-[-36px]">
                 <Icon width={110} height={110} />
               </View>
             ) : (
@@ -44,7 +44,7 @@ export default function BottomNavigationBar() {
                 <Icon
                   width={25}
                   height={25}
-                  stroke={isActive ? "#73D1C0" : undefined}
+                  stroke={isActive ? "#1F8B65" : undefined}
                 />
                 {isActive && <View className="w-6 h-0.5 bg-green mt-1" />}
               </View>
