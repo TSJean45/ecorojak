@@ -6,7 +6,7 @@ import Card from './Card';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface RewardsContentProps {
-  coinBalance: number;
+  coinBalance?: number;
 }
 
 const backgroundImage = require("../assets/images/reward-background.png");

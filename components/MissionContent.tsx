@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const backgroundImage = require("../assets/images/mission-background.png");
 
 interface MissionContentProps {
-  coinBalance: number;
+  coinBalance?: number;
 }
 
 const weekData = [
