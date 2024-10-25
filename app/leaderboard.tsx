@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import Header from "../components/Header";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { SvgXml } from "react-native-svg";
 import CrownSvg from "../assets/images/crown.svg";
 import { Ionicons } from "@expo/vector-icons";
 

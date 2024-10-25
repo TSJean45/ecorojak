@@ -6,6 +6,7 @@ import LocationIcon from "../../assets/images/location.svg";
 import LeaderboardIcon from "../../assets/images/leaderboard.svg";
 import ProfileIcon from "../../assets/images/profile.svg";
 import { useRouter, usePathname } from 'expo-router';
+
 export default function BottomNavigationBar() {
   const [activeTab, setActiveTab] = useState("home");
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function BottomNavigationBar() {
             className={`flex-1 items-center justify-center`}
           >
             {tab.key === "location" ? (
-              <View className="absolute bottom-[-36px]">
+              <View className="absolute bottom-[-46px]">
                 <Icon width={110} height={110} />
               </View>
             ) : (

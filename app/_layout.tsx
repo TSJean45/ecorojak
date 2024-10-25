@@ -31,6 +31,12 @@ export default function RootLayout() {
         <Stack.Screen name="location" />
         <Stack.Screen name="leaderboard" />
         <Stack.Screen name="profile" />
+        <Stack.Screen name="rideshare" />
+        <Stack.Screen name="rideshare/findride" />
+        <Stack.Screen name="rideshare/rideresults" />
+        <Stack.Screen name="rideshare/ridedetails" />
+        <Stack.Screen name="rideshare/cardetails" />
+        <Stack.Screen name="rideshare/hostride" />
       </Stack>
       <BottomNavigationBar />
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import CoinBanner from "./CoinBanner";
 import SectionHeader from "./SectionHeader";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,10 +7,6 @@ import { ProgressBar } from 'react-native-paper';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const backgroundImage = require("../assets/images/mission-background.png");
-
-interface MissionContentProps {
-  coinBalance?: number;
-}
 
 const weekData = [
   { day: 'Mon', date: 19, status: 'inactive' },
@@ -107,7 +103,7 @@ export default function MissionContent({
   return (
     <ImageBackground source={backgroundImage} className="flex-1">
       <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255, 255, 255, 0.65)' }} />
-      <View className="flex-1">
+      <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}>
         <CoinBanner
           coinBalance={coinBalance}
           expiringCoins={10}
@@ -141,12 +137,10 @@ export default function MissionContent({
           </TouchableOpacity>
         </View>
         <SectionHeader title="Daily Missions" />
-        <View style={{ paddingBottom: insets.bottom + 60 }}>
-          {missions.map((mission) => (
-            <MissionItem key={mission.id} {...mission} />
-          ))}
-        </View>
-      </View>
+        {missions.map((mission) => (
+          <MissionItem key={mission.id} {...mission} />
+        ))}
+      </ScrollView>
     </ImageBackground>
   );
 }
