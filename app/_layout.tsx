@@ -32,6 +32,8 @@ export default function RootLayout() {
         <Stack.Screen name="leaderboard" />
         <Stack.Screen name="profile" />
         <Stack.Screen name="rideshare" />
+        <Stack.Screen name="carbontraveller" />
+        <Stack.Screen name="ecolens" />
         <Stack.Screen name="rideshare/findride" />
         <Stack.Screen name="rideshare/rideresults" />
         <Stack.Screen name="rideshare/ridedetails" />
