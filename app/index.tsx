@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, StatusBar, Animated, Image } from "react-native";
+import { View, StatusBar, Animated, Image, StatusBarStyle  } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import "nativewind"; // Ensure NativeWind is imported
 import { PaperProvider } from "react-native-paper";
@@ -28,6 +28,7 @@ export default function SplashScreen() {
   return (
     <PaperProvider>
       <Redirect href="/leaderboard" />
+      <StatusBar barStyle={'dark-content'} backgroundColor="transparent" translucent={true}  />
       {/* <View className="flex-1">
         <StatusBar hidden />
         <Video

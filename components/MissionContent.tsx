@@ -1,69 +1,79 @@
 import React from "react";
-import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import CoinBanner from "./CoinBanner";
 import SectionHeader from "./SectionHeader";
 import { Ionicons } from "@expo/vector-icons";
-import { ProgressBar } from 'react-native-paper';
+import { ProgressBar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import LeafSVG from "../assets/images/checkin.svg";
+import CoinSVG from "../assets/images/coin.svg";
 
 const backgroundImage = require("../assets/images/mission-background.png");
 
 const weekData = [
-  { day: 'Mon', date: 19, status: 'inactive' },
-  { day: 'Tue', date: 20, status: 'inactive' },
-  { day: 'Wed', date: 21, status: 'active' },
-  { day: 'Thu', date: 22, status: 'today' },
-  { day: 'Fri', date: 23, status: 'inactive' },
-  { day: 'Sat', date: 24, status: 'inactive' },
-  { day: 'Sun', date: 25, status: 'inactive' },
+  { day: "Mon", date: 19, status: "claimed" },
+  { day: "Tue", date: 20, status: "claimed" },
+  { day: "Wed", date: 21, status: "claimed" },
+  { day: "Thu", date: 22, status: "today" },
+  { day: "Fri", date: 23, status: "inactive" },
+  { day: "Sat", date: 24, status: "inactive" },
+  { day: "Sun", date: 25, status: "inactive" },
 ];
 
 const missions = [
   {
-    id: '1',
-    title: 'Mission 1',
+    id: "1",
+    title: "Mission 1",
     progress: 0.5,
     remaining: 5000,
     image: require("../assets/images/mission1.png"),
   },
   {
-    id: '2',
-    title: 'Mission 2',
+    id: "2",
+    title: "Mission 2",
     progress: 0.3,
     remaining: 3000,
-    image: require("../assets/images/mission1.png")
+    image: require("../assets/images/mission1.png"),
   },
   {
-    id: '3',
-    title: 'Mission 3',
+    id: "3",
+    title: "Mission 3",
     progress: 0.7,
     remaining: 2000,
     image: require("../assets/images/mission1.png"),
   },
   {
-    id: '4',
-    title: 'Mission 4',
+    id: "4",
+    title: "Mission 4",
     progress: 0.1,
     remaining: 6000,
     image: require("../assets/images/mission1.png"),
   },
   {
-    id: '5',
-    title: 'Mission 5',
+    id: "5",
+    title: "Mission 5",
     progress: 0.9,
     remaining: 1000,
     image: require("../assets/images/mission1.png"),
   },
   {
-    id: '6',
-    title: 'Mission 6',
+    id: "6",
+    title: "Mission 6",
     progress: 0.4,
     remaining: 4000,
     image: require("../assets/images/mission1.png"),
   },
   {
-    id: '7',
-    title: 'Mission 7',
+    id: "7",
+    title: "Mission 7",
     progress: 0.6,
     remaining: 2500,
     image: require("../assets/images/mission1.png"),
@@ -77,20 +87,37 @@ interface MissionItemProps {
   image: any;
 }
 
-const MissionItem = ({ title, progress, remaining, image }: MissionItemProps) => (
-  <View className="flex-row items-center px-2 bg-white mx-2 m-1 rounded-lg shadow">
-    <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }} />
+const MissionItem = ({
+  title,
+  progress,
+  remaining,
+  image,
+}: MissionItemProps) => (
+  <View className="flex-row items-center px-2 py-2 bg-white mx-4 my-1 rounded-lg shadow">
+    <Image source={image} style={{ width: 35, height: 70, marginRight: 10 }} />
     <View className="flex-1">
       <View className="flex-row items-center">
         <Ionicons name="flame" size={20} color="orange" />
-        <Text className="text-lg font-bold ml-2">{title}</Text>
+        <Text className="text-md font-bold ml-1">{title}</Text>
       </View>
-      <Text className="text-sm text-gray-600">Reward: 2 coins</Text>
-      <ProgressBar progress={progress} color="blue" style={{ height: 10, borderRadius: 5, marginVertical: 5 }} />
-      <Text className="text-xs text-gray-500">{remaining} more to complete the challenges</Text>
+      <View className="flex-row items-center py-1">
+        <Text className="text-xs text-black mr-1">Reward 2</Text>
+        <CoinSVG width={15} height={15} />
+      </View>
+      <ProgressBar
+        progress={0.5}
+        color="#73D1C0"
+        style={{
+          height: 10,
+          borderRadius: 5,
+        }}
+      />
+      <Text className="text-[10px] text-gray-500">
+        {remaining} more to complete the challenges
+      </Text>
     </View>
-    <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-full">
-      <Text className="text-white font-bold">Go!</Text>
+    <TouchableOpacity className="bg-green px-4 py-1 rounded-2xl">
+      <Text className="text-xs text-white font-bold">Go!</Text>
     </TouchableOpacity>
   </View>
 );
@@ -102,7 +129,12 @@ export default function MissionContent({
 
   return (
     <ImageBackground source={backgroundImage} className="flex-1">
-      <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(255, 255, 255, 0.65)' }} />
+      <View
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: "rgba(255, 255, 255, 0.65)",
+        }}
+      />
       <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}>
         <CoinBanner
           coinBalance={coinBalance}
@@ -110,31 +142,51 @@ export default function MissionContent({
           expirationDate="2024-12-31"
           hasExtension={true}
         />
-        <View className="p-4 bg-white m-4 rounded-2xl -mt-14">
-          <View className="flex-row justify-between mb-4">
+        <View className="py-4 px-2 bg-white m-4 rounded-2xl -mt-14">
+          <View className="flex-row justify-between">
             {weekData.map(({ day, date, status }) => (
-              <View key={day} className="items-center">
-                <Text className={`text-sm font-bold ${status === 'today' ? 'text-blue-500' : 'text-gray-700'}`}>
+              <View
+                key={day}
+                className={`px-3 py-2 items-center ${
+                  status === "today" ? "bg-green" : "bg-[#F1F1F1]"
+                } rounded-2xl`}
+              >
+                <Text
+                  className={`text-xs font-sans ${
+                    status === "today" ? "text-white" : "text-black"
+                  }`}
+                >
                   {day}
                 </Text>
-                <Text className={`text-lg ${status === 'today' ? 'text-blue-500' : 'text-gray-700'}`}>
+                <Text
+                  className={`text-lg font-bold ${
+                    status === "today" ? "text-white" : "text-black"
+                  }`}
+                >
                   {date}
                 </Text>
-                {status === 'active' && (
-                  <Ionicons name="checkmark-circle" size={24} color="green" />
-                )}
-                {status === 'inactive' && (
-                  <Ionicons name="close-circle" size={24} color="red" />
-                )}
-                {status === 'today' && (
-                  <Ionicons name="ellipse" size={24} color="blue" />
-                )}
+                {status === "claimed" && <LeafSVG width={16} height={16} />}
               </View>
             ))}
           </View>
-          <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-full items-center">
-            <Text className="text-white font-bold">Check-in to get 1 coin</Text>
-          </TouchableOpacity>
+          <View className="flex-row items-center justify-center">
+            <Image
+              source={require("../assets/images/checkin-left.png")}
+              style={{ width: 40, height: 52 }}
+            />
+            <TouchableOpacity className="bg-green py-1 px-6 mx-2 rounded-full">
+              <View className="flex-row items-center">
+                <Text className="text-white font-bold mr-2">
+                  Check-in to get 1
+                </Text>
+                <CoinSVG width={20} height={20} />
+              </View>
+            </TouchableOpacity>
+            <Image
+              source={require("../assets/images/checkin-right.png")}
+              style={{ width: 32, height: 52 }}
+            />
+          </View>
         </View>
         <SectionHeader title="Daily Missions" />
         {missions.map((mission) => (

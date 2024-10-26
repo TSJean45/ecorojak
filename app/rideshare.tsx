@@ -1,82 +1,191 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  ImageBackground,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-import Header from "../components/Header";
+import React, { useState } from "react";
+import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, ScrollView } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Header from "@/components/Header";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"; // For icons
 import { useRouter } from "expo-router";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-const { width, height } = Dimensions.get("window");
+const CalendarIcon = (props) => (
+  <MaterialIcons {...props} name="calendar-today" size={24} color="#4A4A4A" />
+);
 
-export default function RideShare() {
+const CarIcon = (props) => (
+  <MaterialIcons {...props} name="directions-car" size={24} color="#4A4A4A" />
+);
+
+export default function FindRide() {
+  const [seats, setSeats] = useState(1);
   const insets = useSafeAreaInsets();
+  const [fromLocation, setFromLocation] = useState("");
+  const [toLocation, setToLocation] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const router = useRouter();
 
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
+
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <Header title="RideShare" />
-      <ImageBackground
-        source={require("../assets/images/rideshare-background.png")}
-        style={{ flex: 1, width: width, height: height }}
-        imageStyle={{
-          opacity: 0.4,
-          resizeMode: "cover",
-          position: "absolute",
-          right: 0,
-        }}
-      >
-        <View
-          className="absolute top-0 left-0 right-0 p-4 flex-row items-center justify-start bg-white"
-          style={{ paddingTop: insets.top }}
-        >
-          <Image
-            source={require("../assets/images/tapir.png")} // Replace with your profile icon path
-            className="w-10 h-10 rounded-full mr-2"
+    <ScrollView style={styles.container}>
+      <View style={[styles.content, { paddingTop: insets.top }]}>
+        <Header title="Find a Ride" showBackButton={true} />
+
+        <Image
+          source={require("../assets/images/findride.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
+
+        <Text style={styles.sectionTitle}>Where are you going?</Text>
+
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="location-on" size={24} color="#4A4A4A" style={styles.inputIcon} />
+          <TextInput
+            value={fromLocation}
+            onChangeText={setFromLocation}
+            placeholder="From"
+            style={styles.input}
           />
-          <Text className="text-lg font-bold mr-2">Hi, Tey Wei Zheng</Text>
-          <MaterialIcons name="verified" size={24} color="blue" />
         </View>
 
-        <View className="flex-1 justify-center items-center">
-          <View className="items-center w-full px-4">
-            <Image
-              source={require("../assets/images/rideshare1.png")} // Replace with your image path
-              className="w-84 h-64" // Adjust size as needed
-              resizeMode="contain"
-            />
-            <Text className="text-xl font-bold text-green-600 mb-4">
-              Share the ride, green tomorrow!
-            </Text>
-            <View className="mb-2 w-full">
-              <TouchableOpacity
-                className="w-full py-3 border-2 border-green bg-white rounded-2xl"
-                onPress={() => router.push("/rideshare/findride")}
-              >
-                <Text className="text-center text-green font-bold">
-                  Find a Ride
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View className="w-full">
-              <TouchableOpacity
-                className="w-full py-3 border-2 border-green bg-white rounded-2xl"
-                onPress={() => router.push("/rideshare/hostride")}
-              >
-                <Text className="text-center text-green font-bold">
-                  Host a Ride
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="location-on" size={24} color="#4A4A4A" style={styles.inputIcon} />
+          <TextInput
+            value={toLocation}
+            onChangeText={setToLocation}
+            placeholder="To"
+            style={styles.input}
+          />
         </View>
-      </ImageBackground>
-    </SafeAreaView>
+
+        <Text style={styles.sectionTitle}>When?</Text>
+
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.datePickerButton}>
+          <MaterialIcons name="calendar-today" size={24} color="#4A4A4A" style={styles.inputIcon} />
+          <Text style={styles.datePickerText}>{date.toDateString()}</Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+
+        <Text style={styles.sectionTitle}>Seats needed?</Text>
+
+        <View style={styles.seatSelector}>
+          <TouchableOpacity
+            onPress={() => setSeats(Math.max(1, seats - 1))}
+            style={styles.seatButton}
+          >
+            <MaterialIcons name="remove" size={24} color="#4A4A4A" />
+          </TouchableOpacity>
+          <Text style={styles.seatCount}>{seats}</Text>
+          <TouchableOpacity
+            onPress={() => setSeats(seats + 1)}
+            style={styles.seatButton}
+          >
+            <MaterialIcons name="add" size={24} color="#4A4A4A" />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => router.push("/rideshare/ridedetails")}
+          style={styles.searchButton}
+        >
+          <Text style={styles.searchButtonText}>Search</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    marginVertical: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    backgroundColor: 'white',
+  },
+  inputIcon: {
+    padding: 10,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingRight: 10,
+    fontSize: 16,
+  },
+  datePickerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    backgroundColor: 'white',
+    padding: 10,
+  },
+  datePickerText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  seatSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  seatButton: {
+    padding: 10,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 8,
+  },
+  seatCount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 20,
+  },
+  searchButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  searchButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

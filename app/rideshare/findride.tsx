@@ -1,43 +1,40 @@
-import React, { useState, useCallback, useMemo, Suspense } from "react";
+import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"; // For icons
 import Header from "@/components/Header";
 import * as eva from "@eva-design/eva";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ApplicationProvider } from "@ui-kitten/components"; // Only import ApplicationProvider
+import {
+  ApplicationProvider,
+  Datepicker,
+  Input,
+  Icon,
+  IconElement,
+  Layout,
+} from "@ui-kitten/components";
 import { useRouter } from "expo-router";
 
-// Lazy load heavy components from UI Kitten
-const Input = React.lazy(() => import("@ui-kitten/components").then((m) => ({ default: m.Input })));
-const Datepicker = React.lazy(() => import("@ui-kitten/components").then((m) => ({ default: m.Datepicker })));
-
-const CalendarIcon = React.memo(() => (
+const CalendarIcon = () => (
   <MaterialIcons name="calendar-today" size={24} color="black" />
-));
+);
 
-const CarIcon = React.memo(() => (
+const renderCarIcon = () => (
   <MaterialIcons name="directions-car" size={24} color="black" />
-));
+);
 
 export default function FindRide() {
   const [seats, setSeats] = useState(1);
   const insets = useSafeAreaInsets();
-  const [text1, setText1] = useState("");
-  const [text2, setText2] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [text1, setText1] = React.useState("");
+  const [text2, setText2] = React.useState("");
+  const [date, setDate] = React.useState(new Date());
+  const [isFocused1, setIsFocused1] = React.useState(false);
+  const [isFocused2, setIsFocused2] = React.useState(false);
+  const [isFocused3, setIsFocused3] = React.useState(false);
   const router = useRouter();
 
-  const increaseSeats = useCallback(() => setSeats((prev) => prev + 1), []);
-  const decreaseSeats = useCallback(() => setSeats((prev) => (prev > 1 ? prev - 1 : 1)), []);
-
-  const inputStyle = useMemo(
-    () => ({
-      marginBottom: 16,
-      borderColor: "gray",
-      borderWidth: 1,
-    }),
-    []
-  );
+  const increaseSeats = () => setSeats(seats + 1);
+  const decreaseSeats = () => setSeats(seats > 1 ? seats - 1 : 1);
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
@@ -56,40 +53,55 @@ export default function FindRide() {
 
           <Text className="text-lg font-bold mb-1">Where are you going?</Text>
 
-          <Suspense fallback={<Text>Loading Input...</Text>}>
-            <Input
-              value={text1}
-              onChangeText={setText1}
-              placeholder="From"
-              accessoryLeft={CarIcon}
-              style={inputStyle}
-            />
-          </Suspense>
+          <Input
+            value={text1}
+            onChangeText={(text) => setText1(text)}
+            placeholder="From"
+            accessoryLeft={renderCarIcon}
+            style={{
+              marginBottom: 16,
+              borderColor: isFocused1 ? "black" : "gray",
+              borderWidth: 1,
+            }}
+            onFocus={() => setIsFocused1(true)}
+            onBlur={() => setIsFocused1(false)}
+          />
 
-          <Suspense fallback={<Text>Loading Input...</Text>}>
-            <Input
-              value={text2}
-              onChangeText={setText2}
-              placeholder="To"
-              accessoryLeft={CarIcon}
-              style={inputStyle}
-            />
-          </Suspense>
+          <Input
+            value={text2}
+            onChangeText={(text) => setText2(text)}
+            placeholder="To"
+            accessoryLeft={renderCarIcon}
+            style={{
+              marginBottom: 16,
+              borderColor: isFocused2 ? "black" : "gray",
+              borderWidth: 1,
+            }}
+            onFocus={() => setIsFocused2(true)}
+            onBlur={() => setIsFocused2(false)}
+          />
 
+          {/* Subheader: When? */}
           <Text className="text-lg font-bold mb-1">When?</Text>
 
-          <Suspense fallback={<Text>Loading Datepicker...</Text>}>
-            <Datepicker
-              placeholder="Pick Date"
-              date={date}
-              onSelect={setDate}
-              accessoryLeft={CalendarIcon}
-              style={inputStyle}
-            />
-          </Suspense>
+          {/* Input: Calendar Date and Day */}
+          <Datepicker
+            placeholder="Pick Date"
+            date={date}
+            onSelect={(nextDate) => setDate(nextDate)}
+            accessoryLeft={CalendarIcon}
+            style={{
+              marginBottom: 16,
+              borderColor: isFocused2 ? "black" : "gray",
+            }}
+            onFocus={() => setIsFocused3(true)}
+            onBlur={() => setIsFocused3(false)}
+          />
 
+          {/* Subheader: Seat needed? */}
           <Text className="text-lg font-bold mb-1">Seat needed?</Text>
 
+          {/* Seat Selector */}
           <View className="flex-row items-center mb-4">
             <TouchableOpacity
               onPress={decreaseSeats}
@@ -106,8 +118,9 @@ export default function FindRide() {
             </TouchableOpacity>
           </View>
 
+          {/* Search Button */}
           <TouchableOpacity
-            onPress={() => router.push("/rideshare/rideresults")}
+            onPress={() => router.push("/rideshare/ridedetails")}
             className="w-full py-3 bg-green rounded-md"
           >
             <Text className="text-center text-white font-bold">Search</Text>

@@ -7,10 +7,12 @@ import {
   ImageBackground,
 } from "react-native";
 import Header from "../components/Header";
-import { Chip, ProgressBar } from "react-native-paper";
+import { ProgressBar } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useRouter } from "expo-router";
+import { Chip } from "@rneui/themed";
+import CoinSvg from "../assets/images/coin.svg";
 
 export default function Profile() {
   const router = useRouter();
@@ -21,11 +23,11 @@ export default function Profile() {
         title="Profile"
         showBackButton={true}
         rightButton={{
-          icon: "notifications",
+          icon: "notifications-outline",
           onPress: () => console.log("Notifications button pressed"),
         }}
       />
-      <View className="flex-row items-center mt-4 px-4">
+      <View className="flex-row items-center mt-4 px-5">
         <View className="relative">
           <View
             className="absolute w-14 h-14 bg-tiffany rounded-full"
@@ -41,17 +43,18 @@ export default function Profile() {
             <Text className="text-xl font-bold">Tey Wei Zheng</Text>
             <View className="bg-gray-300 rounded-full px-2 py-1 ml-2">
               <Chip
-                mode="outlined"
-                style={{
-                  borderColor: "#cd7f32",
+                title="Beginner"
+                type="outline"
+                color="warning"
+                containerStyle={{ width: 80 }}
+                buttonStyle={{
+                  borderColor: "#DB9744",
+                  borderRadius: 20,
+                  borderWidth: 2,
+                  paddingVertical: 0,
                 }}
-                textStyle={{
-                  color: "#cd7f32",
-                  fontWeight: "bold",
-                }}
-              >
-                Bronze
-              </Chip>
+                titleStyle={{ color: "#DB9744", fontSize: 12 }}
+              />
             </View>
           </View>
           <Text className="text-xs text-gray-600">
@@ -62,47 +65,69 @@ export default function Profile() {
 
       <ImageBackground
         source={require("../assets/images/profile-card.png")}
-        className="mx-4 mt-4" // NativeWind margin and rounded corners
+        className="mx-4"
         imageStyle={{ borderRadius: 25 }} // Keep the card rounded even with ImageBackground
       >
-        <View className="p-4">
+        <View className="px-4 py-2">
           <View className="flex-row justify-between">
             <View>
               <Image
                 source={require("../assets/images/Logo.png")}
-                className="w-16 h-16"
+                className="w-32 h-20"
               />
-              <Text>500</Text>
-              <Text className="text-sm text-gray-700">
-                100 ecoCoin(s) expiring on 31-01-2025
+              <View className="flex-row items-center">
+                <Text
+                  className="text-5xl font-bold mr-2 text-white"
+                  style={{
+                    textShadowColor: "rgba(11, 20, 24, 0.15)",
+                    textShadowOffset: { width: 0, height: 4 },
+                    textShadowRadius: 4,
+                  }}
+                >
+                  500
+                </Text>
+                <CoinSvg width={30} height={30} />
+              </View>
+              <Text className="text-xs text-white font-sans">
+                <Text className="font-bold">100</Text> ecoCoin(s) expiring on{" "}
+                <Text className="font-bold">31-01-2025</Text>
               </Text>
             </View>
             <Image
               source={require("../assets/images/medal.png")}
-              className="w-24 h-24"
+              className="w-34 h-36 mt-2"
             />
           </View>
           <TouchableOpacity
-            className="flex-row justify-end items-center mt-2"
+            className="flex-row  justify-end items-center"
             onPress={() => router.push("/scan")}
           >
             <MaterialCommunityIcons
               name="barcode-scan"
               size={24}
-              color="gray"
+              color="white"
               style={{ marginRight: 8 }}
             />
-            <Text className="text-sm text-gray-700">Scan to Earn Coins</Text>
+            <Text className="text-sm font-bold text-white">
+              Scan to Earn Coins
+            </Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
 
       <View className="mt-4 px-4">
-        <ProgressBar progress={0.5} color="#73D1C0" />
+        <ProgressBar
+          progress={0.5}
+          color="#73D1C0"
+          style={{
+            height: 10, 
+            borderRadius: 5,
+          }}
+        />
         <Text className="text-xs font-sans text-gray-700 mt-2">
-          Get <Text style={{ fontWeight: "bold" }}>500</Text> more eco coin(s)
-          by <Text style={{ fontWeight: "bold" }}>31-01-2025</Text> to unlock{" "}
-          <Text style={{ fontWeight: "bold" }}>Bronze</Text>
+          Get <Text className="font-bold">500</Text> more eco coin(s) by{" "}
+          <Text className="font-bold">31-01-2025</Text> to unlock{" "}
+          <Text className="font-bold">Bronze</Text>
         </Text>
       </View>
 
@@ -112,11 +137,11 @@ export default function Profile() {
           className="w-16 h-16 mr-4"
         />
         <View className="flex-1">
-          <Text className="text-lg font-bold">Referral</Text>
+          <Text className="text-lg font-bold text-green  ">Referral</Text>
           <Text className="text-sm text-gray-700">
-            <Text style={{ color: "green" }}>Invite your friends</Text> to join
-            on <Text style={{ fontWeight: "bold" }}>ecoRojak</Text> and get{" "}
-            <Text style={{ color: "green" }}>1,000 ecoCoins!</Text>
+            <Text className="text-green">Invite your friends</Text> to join on{" "}
+            <Text className="font-bold">ecoRojak</Text> and get{" "}
+            <Text className="text-green">1,000 ecoCoins!</Text>
           </Text>
         </View>
         <TouchableOpacity>

@@ -9,10 +9,10 @@ export default function Scan() {
       className="flex-1"
     >
       <Header title="Scan" showBackButton={true} />
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 justify-center items-center mt-[-60px]">
         <Image
           source={require("../assets/images/scan.png")}
-          style={{ width: "80%", height: "100%" }} 
+          className="w-4/5 h-full"
           resizeMode="contain"
         />
       </View>

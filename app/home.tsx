@@ -13,6 +13,18 @@ export default function Home() {
           router.push('/rideshare')
         }}
       />
+      <Button
+        title="Go to Carbon Traveller"
+        onPress={() => {
+          router.push('/carbontraveller')
+        }}
+      />
+      <Button
+        title="Go to EcoLens"
+        onPress={() => {
+          router.push('/ecolens')
+        }}
+      />
     </View>
   );
 }

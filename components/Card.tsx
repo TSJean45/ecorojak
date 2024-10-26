@@ -12,11 +12,11 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ image, title, buttonText, coins }) => (
   <View className="w-1/2 p-2">
     <View className="bg-white rounded-lg shadow items-center p-4">
-      <Image source={image} className="w-24 h-24 mb-2" />
-      <Text className="text-lg font-bold mb-2">{title}</Text>
+      <Image source={image} className="w-full h-20 mb-2" />
+      <Text className="text-md text-left font-bold mb-2">{title}</Text>
       <View className="flex-row items-center">
-        <Text className="mr-2">{coins}</Text> 
-        <CoinSvg width={30} height={30} className="mr-2" />
+        <Text className="mr-1">{coins}</Text> 
+        <CoinSvg width={20} height={20} className="mr-2" />
         <Button title={buttonText} />
       </View>
     </View>

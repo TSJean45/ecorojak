@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  StatusBar,
   SafeAreaView,
 } from "react-native";
 import Header from "../components/Header";
@@ -61,12 +62,12 @@ const Podium = ({ topThree }: { topThree: LeaderboardEntry[] }) => (
             />
           </View>
           <Text className="font-bold mb-1">{topThree[index].name}</Text>
-          <Text className="text-sm mb-2">{topThree[index].score}</Text>
+          <Text className="text-sm mb-2">{topThree[index].score} steps.</Text>
           <View
-            className={`w-24 ${config.height} items-center justify-center rounded-t-3xl`}
+            className={`w-24 ${config.height} items-center justify-start rounded-t-3xl`}
             style={{ backgroundColor: config.color }}
           >
-            <Text className="font-bold text-lg">{topThree[index].rank}</Text>
+            <Text className="font-bold text-lg text-white mt-2">{topThree[index].rank}</Text>
           </View>
         </View>
       </View>
@@ -90,10 +91,10 @@ const LeaderboardItem = ({ item }: { item: LeaderboardEntry }) => (
     <Text className="font-bold text-lg w-8 mr-2">{item.rank}</Text>
     <Image
       source={cityIconMap[item.cityIcon]}
-      style={{ width: 30, height: 30 }}
+      style={{ width: 40, height: 40 }}
       className="rounded-full mr-3"
     />
-    <Text className="flex-1 text-lg font-bold">{item.name}</Text>
+    <Text className="flex-1 ml-2 text-md font-bold">{item.name}</Text>
     <Text className="text-md font-regular">{item.score} steps.</Text>
   </View>
 );
@@ -190,16 +191,21 @@ export default function LeaderboardScreen() {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView className="flex-1 bg-white">
+    <StatusBar
+      barStyle="dark-content"
+      backgroundColor="transparent"
+      translucent
+    />
       <ImageBackground
         source={require("../assets/images/leaderboard-background.png")}
-        style={{ flex: 1, width: width, height: height }}
+        style={{ flex: 1, width: width, height: height * 0.7  }}
         imageStyle={{
           opacity: 0.4,
           resizeMode: "cover",
           position: "absolute",
           right: 0,
-        }}
+        }}  
       >
         <View
           className="flex-1 bg-transparent"

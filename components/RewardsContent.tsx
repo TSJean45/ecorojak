@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView, ImageBackground, StyleSheet } from 'react-native';
-import CoinBanner from './CoinBanner';
+import CoinBanner from  './CoinBanner';
 import SectionHeader from './SectionHeader';
 import Card from './Card';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
