@@ -20,6 +20,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-navigation/native": "^6.0.2",
+    "@reactvision/react-viro": "^2.41.6",
     "@rneui/base": "^0.0.0-edge.2",
     "@rneui/themed": "^0.0.0-edge.2",
     "@ui-kitten/components": "^5.3.1",
