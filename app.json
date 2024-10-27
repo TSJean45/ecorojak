@@ -33,12 +33,14 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "@reactvision/react-viro",
-      {
-        "android": {
-          "xRMode": ["GVR", "AR", "OVR_MOBILE"]
+      [
+        "@reactvision/react-viro",
+        {
+          "android": {
+            "xRMode": ["GVR", "AR", "OVR_MOBILE"]
+          }
         }
-      }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
