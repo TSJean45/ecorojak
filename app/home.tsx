@@ -14,6 +14,12 @@ export default function Home() {
         }}
       />
       <Button
+        title="Go to index"
+        onPress={() => {
+          router.push('/')
+        }}
+      />
+      <Button
         title="Go to Carbon Traveller"
         onPress={() => {
           router.push('/carbontraveller')
@@ -23,6 +29,12 @@ export default function Home() {
         title="Go to EcoLens"
         onPress={() => {
           router.push('/ecolens')
+        }}
+      />
+      <Button
+        title="Go to trash"
+        onPress={() => {
+          router.push('/trashartify')
         }}
       />
     </View>

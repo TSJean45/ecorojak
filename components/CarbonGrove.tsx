@@ -251,7 +251,7 @@ const CarbonGrove: React.FC = () => {
       >
         <View style={{
           flex: 1,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // This adds the semi-transparent black background
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
         }}>
           <SafeAreaView style={{ flex: 1 }}>
             <StatusBar

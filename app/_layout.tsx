@@ -1,11 +1,13 @@
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import * as Font from 'expo-font';
 import { View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BottomNavigationBar from '../components/navigation/BottomNavigationBar';
+import ChatFAB from '../components/ChatFAB'; // Ensure the path is correct
 
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     async function loadFonts() {
@@ -23,9 +25,8 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <View className="flex-1">
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
         <Stack.Screen name="home" />
         <Stack.Screen name="mission" />
         <Stack.Screen name="location" />
@@ -34,13 +35,19 @@ export default function RootLayout() {
         <Stack.Screen name="rideshare" />
         <Stack.Screen name="carbontraveller" />
         <Stack.Screen name="ecolens" />
-        <Stack.Screen name="rideshare/findride" />
+        <Stack.Screen name="greenie" />
         <Stack.Screen name="rideshare/rideresults" />
         <Stack.Screen name="rideshare/ridedetails" />
         <Stack.Screen name="rideshare/cardetails" />
         <Stack.Screen name="rideshare/hostride" />
+        <Stack.Screen name="ecolens/landmarkfinder" />
+        <Stack.Screen name="authentication/signup" />
+        <Stack.Screen name="authentication/verification" />
+        <Stack.Screen name="authentication/avatar" />
+        <Stack.Screen name="authentication/login" />
       </Stack>
-      <BottomNavigationBar />
-    </>
+      {pathname !== '/' && <BottomNavigationBar />}
+      {pathname !== '/greenie' && pathname !== '/' && <ChatFAB />}
+    </View>
   );
 }

@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import Header from "../components/Header";
 import { ProgressBar } from "react-native-paper";
@@ -19,6 +20,11 @@ export default function Profile() {
 
   return (
     <View className="flex-1 bg-[#F8FFFF]">
+    <StatusBar
+      barStyle="dark-content"
+      backgroundColor="transparent"
+        translucent
+      />
       <Header
         title="Profile"
         showBackButton={true}

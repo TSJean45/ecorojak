@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, StatusBar, Animated, Image, StatusBarStyle  } from "react-native";
+import { Text, View, StatusBar, Animated, Image, StatusBarStyle, TouchableOpacity } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import "nativewind"; // Ensure NativeWind is imported
 import { PaperProvider } from "react-native-paper";
-import { Stack, Redirect } from "expo-router";
+import { Stack, Redirect, router } from "expo-router";
 
 export default function SplashScreen() {
   const video = useRef(null);
@@ -27,10 +27,12 @@ export default function SplashScreen() {
 
   return (
     <PaperProvider>
-      <Redirect href="/leaderboard" />
-      <StatusBar barStyle={'dark-content'} backgroundColor="transparent" translucent={true}  />
-      {/* <View className="flex-1">
-        <StatusBar hidden />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <View className="flex-1">
         <Video
           ref={video}
           source={require("../assets/video/city paning.mp4")}
@@ -39,21 +41,30 @@ export default function SplashScreen() {
           isLooping
           resizeMode={ResizeMode.COVER}
         />
-
-        {showLogo && (
-          <View className="absolute inset-0 justify-center items-center">
-            <Image
-              source={require("../assets/images/Logo.png")}
-              className="w-36 h-36 mb-4"
-            />
-          </View>
-        )}
+        
 
         <Animated.View
           className="absolute top-0 left-0 right-0 bottom-0 bg-black"
           style={{ opacity: backgroundOpacity }}
         />
-      </View> */}
+
+        {showLogo && (
+          <View className="flex-1 items-center justify-center">
+            <Image
+              source={require("../assets/images/logo2.png")}
+              className="w-80 h-80"
+              resizeMode="contain"
+            />
+            
+            <TouchableOpacity 
+              className="bg-green px-8 py-3 rounded-full"
+              onPress={() => router.push('/login')}
+            >
+              <Text className="text-white font-semibold text-lg">Get Started</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </PaperProvider>
   );
 }

@@ -88,8 +88,8 @@ const CarbonTrail: React.FC = () => {
       
       <View className="flex-row justify-between items-center px-4 my-2">
         <Text className="font-bold text-lg">Recent Activities</Text>
-        <TouchableOpacity className="bg-green p-2 rounded-full">
-          <Ionicons name="add" size={10} color="white" />
+        <TouchableOpacity className="bg-green p-1 rounded-full">
+          <Ionicons name="add" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
