@@ -10,6 +10,7 @@ module.exports = {
       },
       colors: {
         tiffany: '#73D1C0',    
+        chat: 'rgba(115,209,192,0.5)',    
         green: '#1F8B65',  
         celeste: '#ACF2EC',     
         white: '#F8FFFF',     
