@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import HomeIcon from "../../assets/images/home.svg";
-import MissionIcon from "../../assets/images/mission.svg";
+import { Ionicons } from '@expo/vector-icons';
 import LocationIcon from "../../assets/images/location.svg";
-import LeaderboardIcon from "../../assets/images/leaderboard.svg";
-import ProfileIcon from "../../assets/images/profile.svg";
 import { useRouter, usePathname } from 'expo-router';
 
 export default function BottomNavigationBar() {
@@ -13,19 +10,17 @@ export default function BottomNavigationBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { key: "home", icon: HomeIcon },
-    { key: "mission", icon: MissionIcon },
-    { key: "location", icon: LocationIcon }, // Central fancy tab
-    { key: "leaderboard", icon: LeaderboardIcon },
-    { key: "profile", icon: ProfileIcon },
+    { key: "home", icon: "home", iconOutline: "home-outline" },
+    { key: "mission", icon: "flag", iconOutline: "flag-outline" },
+    { key: "location", customIcon: LocationIcon },
+    { key: "leaderboard", icon: "trophy", iconOutline: "trophy-outline" },
+    { key: "profile", icon: "person", iconOutline: "person-outline" },
   ];
 
   return (
     <View className="absolute bottom-0 left-0 right-0 h-14 bg-white rounded-t-3xl flex-row justify-between items-center px-1">
       {tabs.map((tab) => {
-        const isFancy = tab.key === "location";
         const isActive = activeTab === tab.key;
-        const Icon = tab.icon;
 
         return (
           <TouchableOpacity
@@ -36,16 +31,16 @@ export default function BottomNavigationBar() {
             }}
             className={`flex-1 items-center justify-center`}
           >
-            {tab.key === "location" ? (
+            {tab.customIcon ? (
               <View className="absolute bottom-[-46px]">
-                <Icon width={110} height={110} />
+                <LocationIcon width={110} height={110} />
               </View>
             ) : (
               <View className="items-center">
-                <Icon
-                  width={25}
-                  height={25}
-                  stroke={isActive ? "#1F8B65" : undefined}
+                <Ionicons
+                  name={isActive ? tab.icon : tab.iconOutline}
+                  size={25}
+                  color={isActive ? "#1F8B65" : "#666666"}
                 />
                 {isActive && <View className="w-6 h-0.5 bg-green mt-1" />}
               </View>

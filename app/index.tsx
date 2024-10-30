@@ -7,19 +7,37 @@ import { Stack, Redirect, router } from "expo-router";
 
 export default function SplashScreen() {
   const video = useRef(null);
-  const [backgroundOpacity] = useState(new Animated.Value(0)); // Dark background opacity
+  const [backgroundOpacity] = useState(new Animated.Value(0));
+  const [logoOpacity] = useState(new Animated.Value(0)); // New animated value for logo
+  const [buttonOpacity] = useState(new Animated.Value(0)); // New animated value for button
   const [showLogo, setShowLogo] = useState(false);
 
   // Fade in the dark background after component mounts
   useEffect(() => {
+    // Background fade animation
     Animated.timing(backgroundOpacity, {
-      toValue: 0.6, // Dark background at 60% opacity
+      toValue: 0.6,
       duration: 4000,
       useNativeDriver: true,
     }).start();
 
     const timer = setTimeout(() => {
       setShowLogo(true);
+      // Sequence of animations for logo and button
+      Animated.sequence([
+        // Logo fade in
+        Animated.timing(logoOpacity, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        // Button fade in after logo
+        Animated.timing(buttonOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+      ]).start();
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -50,18 +68,22 @@ export default function SplashScreen() {
 
         {showLogo && (
           <View className="flex-1 items-center justify-center">
-            <Image
-              source={require("../assets/images/logo2.png")}
-              className="w-80 h-80"
-              resizeMode="contain"
-            />
+            <Animated.View style={{ opacity: logoOpacity }}>
+              <Image
+                source={require("../assets/images/logo2.png")}
+                className="w-80 h-80"
+                resizeMode="contain"
+              />
+            </Animated.View>
             
-            <TouchableOpacity 
-              className="bg-green px-8 py-3 rounded-full"
-              onPress={() => router.push('/login')}
-            >
-              <Text className="text-white font-semibold text-lg">Get Started</Text>
-            </TouchableOpacity>
+            <Animated.View style={{ opacity: buttonOpacity }}>
+              <TouchableOpacity 
+                className="bg-green px-8 py-3 rounded-full"
+                onPress={() => router.push("/login")}
+              >
+                <Text className="text-white font-semibold text-lg">Get Started</Text>
+              </TouchableOpacity>
+            </Animated.View>
           </View>
         )}
       </View>

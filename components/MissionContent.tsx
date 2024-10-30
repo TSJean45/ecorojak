@@ -31,53 +31,60 @@ const weekData = [
 const missions = [
   {
     id: "1",
-    title: "Mission 1",
-    progress: 0.5,
-    remaining: 5000,
+    title: "Walk 5,000 Steps",
+    progress: 1.0,
+    remaining: 0,
     image: require("../assets/images/mission1.png"),
   },
   {
     id: "2",
-    title: "Mission 2",
+    title: "Run 3km",
     progress: 0.3,
-    remaining: 3000,
-    image: require("../assets/images/mission1.png"),
+    remaining: 2.1,
+    image: require("../assets/images/mission2.png"),
   },
   {
     id: "3",
-    title: "Mission 3",
+    title: "Read Articles",
     progress: 0.7,
-    remaining: 2000,
-    image: require("../assets/images/mission1.png"),
+    remaining: 3,
+    image: require("../assets/images/mission3.png"),
   },
   {
     id: "4",
-    title: "Mission 4",
+    title: "Recycle Items",
     progress: 0.1,
-    remaining: 6000,
-    image: require("../assets/images/mission1.png"),
+    remaining: 9,
+    image: require("../assets/images/mission4.png"),
   },
   {
     id: "5",
-    title: "Mission 5",
-    progress: 0.9,
-    remaining: 1000,
+    title: "Walk 30 Minutes",
+    progress: 0.4,
+    remaining: 18,
     image: require("../assets/images/mission1.png"),
   },
   {
     id: "6",
-    title: "Mission 6",
-    progress: 0.4,
-    remaining: 4000,
-    image: require("../assets/images/mission1.png"),
+    title: "Sprint Training",
+    progress: 0.6,
+    remaining: 4,
+    image: require("../assets/images/mission2.png"),
   },
   {
     id: "7",
-    title: "Mission 7",
-    progress: 0.6,
-    remaining: 2500,
-    image: require("../assets/images/mission1.png"),
+    title: "Watch Eco Videos",
+    progress: 0.2,
+    remaining: 8,
+    image: require("../assets/images/mission3.png"),
   },
+  {
+    id: "8",
+    title: "Sort Waste",
+    progress: 0.8,
+    remaining: 2,
+    image: require("../assets/images/mission4.png"),
+  }
 ];
 
 interface MissionItemProps {
@@ -94,7 +101,7 @@ const MissionItem = ({
   image,
 }: MissionItemProps) => (
   <View className="flex-row items-center px-2 py-2 bg-white mx-4 my-1 rounded-lg shadow">
-    <Image source={image} style={{ width: 35, height: 70, marginRight: 10 }} />
+    <Image source={image} style={{ width: 35, height: 50, marginRight: 10 }} />
     <View className="flex-1">
       <View className="flex-row items-center">
         <Ionicons name="flame" size={20} color="orange" />
@@ -105,7 +112,7 @@ const MissionItem = ({
         <CoinSVG width={15} height={15} />
       </View>
       <ProgressBar
-        progress={0.5}
+        progress={progress}
         color="#73D1C0"
         style={{
           height: 10,
@@ -116,8 +123,15 @@ const MissionItem = ({
         {remaining} more to complete the challenges
       </Text>
     </View>
-    <TouchableOpacity className="bg-green px-4 py-1 rounded-2xl">
-      <Text className="text-xs text-white font-bold">Go!</Text>
+    <TouchableOpacity 
+      className={`px-4 py-1 rounded-2xl ${
+        progress === 1.0 ? "bg-green/50" : "bg-green"
+      }`}
+      disabled={progress === 1.0}
+    >
+      <Text className="text-xs text-white font-bold">
+        {progress === 1.0 ? "Yay!" : "Go!"}
+      </Text>
     </TouchableOpacity>
   </View>
 );

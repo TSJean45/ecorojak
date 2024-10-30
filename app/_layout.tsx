@@ -9,6 +9,9 @@ export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const pathname = usePathname();
 
+  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar'];
+  const excludedPathsForChat = ['/', '/greenie', '/verification', '/signup', '/login', '/avatar', '/home'];
+
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -34,6 +37,7 @@ export default function RootLayout() {
         <Stack.Screen name="profile" />
         <Stack.Screen name="rideshare" />
         <Stack.Screen name="carbontraveller" />
+        <Stack.Screen name="wastewizard" />
         <Stack.Screen name="ecolens" />
         <Stack.Screen name="greenie" />
         <Stack.Screen name="rideshare/rideresults" />
@@ -41,13 +45,19 @@ export default function RootLayout() {
         <Stack.Screen name="rideshare/cardetails" />
         <Stack.Screen name="rideshare/hostride" />
         <Stack.Screen name="ecolens/landmarkfinder" />
-        <Stack.Screen name="authentication/signup" />
-        <Stack.Screen name="authentication/verification" />
-        <Stack.Screen name="authentication/avatar" />
-        <Stack.Screen name="authentication/login" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="verification" />
+        <Stack.Screen name="avatar" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="wastewizard/scanresults" />
+        <Stack.Screen name="wastewizard/resultdetails" />
+        <Stack.Screen name="wastewizard/trashartify" />
+        <Stack.Screen name="wastewizard/trashscanify" />
+        <Stack.Screen name="wastewizard/book" />
+        <Stack.Screen name="wastewizard/pickup" />
       </Stack>
-      {pathname !== '/' && <BottomNavigationBar />}
-      {pathname !== '/greenie' && pathname !== '/' && <ChatFAB />}
+      {!excludedPathsForNav.includes(pathname) && <BottomNavigationBar />}
+      {!excludedPathsForChat.includes(pathname) && <ChatFAB />}
     </View>
   );
 }

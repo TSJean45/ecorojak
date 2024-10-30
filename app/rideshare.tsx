@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  StatusBar,
 } from "react-native";
 import { useRouter } from "expo-router";
 import Header from "@/components/Header";
@@ -185,6 +186,11 @@ export default function RideShare() {
 
   return (
     <View className="flex-1">
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ImageBackground
         source={require("../assets/images/rideshare1.png")}
         style={{ flex: 1, width: width, height: height * 0.3 }}

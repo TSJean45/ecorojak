@@ -19,6 +19,14 @@ const { width, height } = Dimensions.get("window");
 
 const cityIconMap: { [key: string]: any } = {
   johor: require("../assets/images/johor.png"),
+  kl: require("../assets/images/kl.png"),
+  penang: require("../assets/images/georgetown.png"),
+  malacca: require("../assets/images/melaka.png"),
+  ipoh: require("../assets/images/ipoh.png"),
+  kuching: require("../assets/images/kuching.jpg"),
+  kotakinabalu: require("../assets/images/kota kinabalu.jpg"),
+  putrajaya: require("../assets/images/putrajaya.png"),
+  petalingjaya: require("../assets/images/pj.png"),
 };
 
 type LeaderboardEntry = {
@@ -126,66 +134,66 @@ export default function LeaderboardScreen() {
   const insets = useSafeAreaInsets();
 
   const topThree: LeaderboardEntry[] = [
-    { id: "2", rank: 2, name: "Johor Bahru", score: 950, cityIcon: "johor" },
-    { id: "1", rank: 1, name: "Johor Bahru", score: 1000, cityIcon: "johor" },
-    { id: "3", rank: 3, name: "Bob Johnson", score: 900, cityIcon: "johor" },
+    { id: "2", rank: 2, name: "Penang", score: 8750432, cityIcon: "penang" },
+    { id: "1", rank: 1, name: "Kuala Lumpur", score: 9245671, cityIcon: "kl" },
+    { id: "3", rank: 3, name: "Johor Bahru", score: 8124563, cityIcon: "johor" },
   ];
 
   const remainingSeven: LeaderboardEntry[] = [
     {
       id: "4",
       rank: 4,
-      name: "Alice Brown",
-      score: 850,
-      cityIcon: "johor",
+      name: "Malacca",
+      score: 7856234,
+      cityIcon: "malacca",
       rankChange: "up",
     },
     {
       id: "5",
       rank: 5,
-      name: "Charlie Davis",
-      score: 800,
-      cityIcon: "johor",
+      name: "Ipoh",
+      score: 7234891,
+      cityIcon: "ipoh",
       rankChange: "down",
     },
     {
       id: "6",
       rank: 6,
-      name: "Eva White",
-      score: 750,
-      cityIcon: "johor",
+      name: "Kuching",
+      score: 6987452,
+      cityIcon: "kuching",
       rankChange: "same",
     },
     {
       id: "7",
       rank: 7,
-      name: "Frank Miller",
-      score: 700,
-      cityIcon: "johor",
+      name: "Kota Kinabalu",
+      score: 6543217,
+      cityIcon: "kotakinabalu",
       rankChange: "up",
     },
     {
       id: "8",
       rank: 8,
-      name: "Grace Lee",
-      score: 650,
-      cityIcon: "johor",
+      name: "Putrajaya",
+      score: 6123456,
+      cityIcon: "putrajaya",
       rankChange: "down",
     },
     {
       id: "9",
       rank: 9,
-      name: "Henry Wilson",
-      score: 600,
-      cityIcon: "johor",
+      name: "Petaling Jaya",
+      score: 5876543,
+      cityIcon: "petalingjaya",
       rankChange: "same",
     },
     {
       id: "10",
       rank: 10,
-      name: "Ivy Taylor",
-      score: 550,
-      cityIcon: "johor",
+      name: "Petaling Jaya",
+      score: 5234567,
+      cityIcon: "petalingjaya",
       rankChange: "up",
     },
   ];

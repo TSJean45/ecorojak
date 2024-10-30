@@ -19,7 +19,7 @@ const LandmarkFinder: React.FC = () => {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const imageUrl = "https://i.imgur.com/l9M0tUU.jpeg";
+  const imageUrl = "https://i.imgur.com/7Y7ZL6P.jpeg";
 
   const pannellumContent = `
     <!DOCTYPE html>
@@ -68,7 +68,7 @@ const LandmarkFinder: React.FC = () => {
             hotSpots: [
               {
                 pitch: 0,    // Vertical position
-                yaw: -100,      // Horizontal position
+                yaw: 80,      // Horizontal position
                 cssClass: 'custom-hotspot',
                 createTooltipFunc: hotspot => {
                   hotspot.addEventListener('click', () => {

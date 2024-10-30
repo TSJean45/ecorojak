@@ -91,19 +91,19 @@ export default function RideDetails() {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const insets = useSafeAreaInsets();
 
-  // Example coordinates for Melaka Sentral and TBS
+  // Example coordinates for Kepong to Metro Prima Kepong
   const origin = {
-    latitude: 2.2062,
-    longitude: 102.2553,
-    title: "Melaka Sentral",
-    description: "Melaka",
+    latitude: 3.2087,
+    longitude: 101.6341,
+    title: "Kepong Central",
+    description: "Kepong",
   };
 
   const destination = {
-    latitude: 3.0819,
-    longitude: 101.7183,
-    title: "TBS",
-    description: "Kuala Lumpur",
+    latitude: 3.2155,
+    longitude: 101.6397,
+    title: "Metro Prima",
+    description: "Kepong",
   };
 
   // Calculate the region to show both markers
@@ -197,33 +197,33 @@ export default function RideDetails() {
 
         <View className="px-5">
           <Text className="text-xl font-bold text-black py-2">
-            Friday, October 24, 2024
+            Saturday, March 23, 2024
           </Text>
           <View className="flex-row items-start">
             <View className="mr-1">
-              <Text className="text-lg font-bold">07:00 AM</Text>
-              <Text className="text-lg font-bold mt-[55px]">09:00 AM</Text>
+              <Text className="text-lg font-bold">10:15 AM</Text>
+              <Text className="text-lg font-bold mt-[55px]">10:30 AM</Text>
             </View>
 
-            {/* Circle and line column */}
-            <View className="items-center justify-center mx-4">
-              <View className="mt-2 w-4 h-4 bg-green rounded-full" />
-              <View className="w-0.5 bg-green h-16" />
-              <View className="w-4 h-4 bg-green rounded-full" />
+            {/* Vertical line with dots */}
+            <View className="mx-2 items-center mt-1 h-24">
+              <View className="w-3 h-3 rounded-full bg-green" />
+              <View className="w-[1px] h-20 bg-green" />
+              <View className="w-3 h-3 rounded-full bg-green" />
             </View>
 
             {/* Address column */}
             <View className="flex-1">
               <View>
-                <Text className="text-md font-semibold">Melaka Sentral</Text>
-                <Text className="text-xs text-gray-500">Melaka</Text>
+                <Text className="text-md font-semibold">Kepong Central</Text>
+                <Text className="text-xs text-gray">Near Aeon Kepong</Text>
               </View>
 
               <View className="mt-11">
                 <Text className="text-md font-semibold">
-                  TBS (Terminal Bersepadu Selatan)
+                  Metro Prima
                 </Text>
-                <Text className="text-xs text-gray-500">Kuala Lumpur</Text>
+                <Text className="text-xs text-gray">Metro Prima Kepong</Text>
               </View>
             </View>
           </View>
@@ -236,8 +236,8 @@ export default function RideDetails() {
               {/* Top row: Car name and image */}
               <View className="flex-row items-center justify-between">
                 <View>
-                  <Text className="text-lg font-bold">Perodua Viva</Text>
-                  <Text className="text-gray-600">Black</Text>
+                  <Text className="text-lg font-bold">Myvi</Text>
+                  <Text className="text-gray-600">Silver</Text>
                 </View>
                 <Image
                   source={require("@/assets/images/car.png")}
@@ -265,7 +265,7 @@ export default function RideDetails() {
                     source={require("@/assets/images/profile.png")}
                     className="w-10 h-10 rounded-full mr-3"
                   />
-                  <Text className="text-lg font-semibold">John Doe</Text>
+                  <Text className="text-lg font-semibold">Sarah Lee</Text>
                 </View>
                 <Ionicons name="chatbubble-outline" size={24} color="#000" />
               </View>
