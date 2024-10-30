@@ -36,7 +36,7 @@ export default function Avatar() {
         className="bg-green mx-14 p-3 rounded-2xl mt-10"
         onPress={() => router.push("/home")}
       >
-        <Text className="text-white text-center font-semibold">Select</Text>
+        <Text className="text-white text-center font-bold">Select</Text>
       </TouchableOpacity>
 
       {/* Avatar grid container */}

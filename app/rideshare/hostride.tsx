@@ -179,7 +179,7 @@ export default function HostRide() {
             className="bg-green py-3 rounded-full mb-6"
             onPress={() => {/* handle post */}}
           >
-            <Text className="text-white text-center font-semibold">
+            <Text className="text-white text-center font-bold">
               Post Ride
             </Text>
           </TouchableOpacity>

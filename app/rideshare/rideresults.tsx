@@ -37,10 +37,10 @@ const ResultCard = ({
           <View className="w-10 h-10 bg-gray-300 rounded-full mr-2 justify-center items-center">
             <MaterialIcons name="account-circle" size={36} color="#4A5568" />
           </View>
-          <Text className="font-semibold">{driver}</Text>
+          <Text className="font-bold">{driver}</Text>
         </View>
         <View className="items-end">
-          <Text className="text-md font-semibold">{car}</Text>
+          <Text className="text-md font-bold">{car}</Text>
           <Text className="text-[10px] text-gray">{seats} seats available</Text>
         </View>
       </View>

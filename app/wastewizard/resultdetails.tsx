@@ -31,7 +31,7 @@ const ResultDetails = () => {
         {/* Material Chip */}
         <View className="absolute bottom-4 left-4">
           <View className="bg-black px-4 py-2 rounded-full">
-            <Text className="font-semibold text-white">Cardboard</Text>
+            <Text className="font-bold text-white">Cardboard</Text>
           </View>
         </View>
       </View>
@@ -125,7 +125,7 @@ const ResultDetails = () => {
               router.push("/wastewizard/trashartify"); 
             }}
           >
-            <Text className="text-white text-center font-semibold">
+            <Text className="text-white text-center font-bold">
               Generate Other Ideas
             </Text>
           </TouchableOpacity>

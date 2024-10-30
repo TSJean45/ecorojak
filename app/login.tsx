@@ -31,7 +31,7 @@ export default function Login() {
           className="bg-green p-3 rounded-2xl w-full"
           onPress={() => router.push("/verification")}
         >
-          <Text className="text-white text-center font-semibold">Login</Text>
+          <Text className="text-white text-center font-bold">Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 

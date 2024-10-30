@@ -7,13 +7,13 @@ const CarbonTrail: React.FC = () => {
   const screenWidth = Dimensions.get('window').width;
 
   const activities = [
-    { id: '1', name: 'Public Transport Usage', time: 'At 09:00 AM for 7 km', impact: -50, impactTime: '25 Oct, 2024', image: require('../assets/images/commuting.png') },
-    { id: '2', name: 'Cycling', time: 'At 09:00 AM for 7 km', impact: -20, impactTime: '25 Oct, 2024', image: require('../assets/images/cycling.png') },
-    { id: '3', name: 'Driving', time: 'At 09:00 PM for 10 km', impact: 60, impactTime: '25 Oct, 2024', image: require('../assets/images/driving.png') },
+    { key: '1', name: 'Public Transport Usage', time: 'At 09:00 AM for 7 km', impact: -50, impactTime: '25 Oct, 2024', image: require('../assets/images/commuting.png') },
+    { key: '2', name: 'Cycling', time: 'At 09:00 AM for 7 km', impact: -20, impactTime: '25 Oct, 2024', image: require('../assets/images/cycling.png') },
+    { key: '3', name: 'Driving', time: 'At 09:00 PM for 10 km', impact: 60, impactTime: '25 Oct, 2024', image: require('../assets/images/driving.png') },
   ];
  
   const renderActivity = ({ item }) => (
-    <View className="flex-row items-center py-3 bg-white p-2 mb-1 rounded-xl">
+    <View key={item.key} className="flex-row items-center py-3 bg-white p-2 mb-1 rounded-xl">
       <Image source={item.image} className="w-12 h-12" />
       <View className="flex-1 ml-3">
         <Text className="font-bold text-md">{item.name}</Text>

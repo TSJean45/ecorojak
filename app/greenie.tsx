@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,151 +12,28 @@ import { Ionicons } from "@expo/vector-icons";
 import Header from "@/components/Header";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const useTypewriter = (text: string, speed: number = 20) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isComplete, setIsComplete] = useState(false);
-
-  useEffect(() => {
-    let index = 0;
-    setDisplayedText('');
-    setIsComplete(false);
-
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        setDisplayedText((prev) => prev + text.charAt(index));
-        index++;
-      } else {
-        setIsComplete(true);
-        clearInterval(interval);
-      }
-    }, speed);
-
-    return () => clearInterval(interval);
-  }, [text, speed]);
-
-  return { displayedText, isComplete };
-};
-
-const TypewriterMessage = ({ text, onComplete }) => {
-  const { displayedText, isComplete } = useTypewriter(text);
-
-  useEffect(() => {
-    if (isComplete) {
-      onComplete?.();
-    }
-  }, [isComplete]);
-
-  return <Text className="text-base">{displayedText}</Text>;
-};
-
 export default function Greenie() {
-  const flatListRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const insets = useSafeAreaInsets();
-
-  // Predefined conversation
-  const conversationFlow = [
-    {
-      id: "1",
-      text: "Hey, EcoBot! I'm at the recycling drive and I want to maximize my contribution. What should I focus on today?",
-      sender: "user",
-      isComplete: true,
-    },
-    {
-      id: "2",
-      text: "Hello! Focus on sorting your items correctly. I can help you identify what materials to prioritize for recycling.",
-      sender: "bot",
-      isComplete: false,
-    },
-    {
-      id: "3",
-      text: "Awesome! Can you tell me what common household items are often not recyclable?",
-      sender: "user",
-      isComplete: true,
-    },
-    {
-      id: "4",
-      text: "Certainly! Items like pizza boxes, plastic bags, and certain types of glass can't be recycled. Make sure to keep them separate!",
-      sender: "bot",
-      isComplete: false,
-    },
-    {
-      id: "5",
-      text: "Got it! What about this old battery? Is there a special way to dispose of that?",
-      sender: "user",
-      isComplete: true,
-    },
-    {
-      id: "6",
-      text: "Yes! Batteries should not be placed in regular recycling bins. Check for designated drop-off locations for hazardous waste in your area.",
-      sender: "bot",
-      isComplete: false,
-    },
-  ];
-
-  useEffect(() => {
-    if (messages.length === 0) {
-      displayNextMessage();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (currentMessageIndex > 0 && currentMessageIndex < conversationFlow.length) {
-      const currentMessage = conversationFlow[currentMessageIndex - 1];
-      if (currentMessage.sender === "user") {
-        const timer = setTimeout(() => {
-          displayNextMessage();
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [currentMessageIndex]);
-
-  const displayNextMessage = () => {
-    if (currentMessageIndex < conversationFlow.length) {
-      const nextMessage = conversationFlow[currentMessageIndex];
-      setMessages(prev => [...prev, nextMessage]);
-      setIsTyping(nextMessage.sender === "bot");
-      setCurrentMessageIndex(prev => prev + 1);
-    }
-  };
-
-  const handleMessageComplete = (messageId) => {
-    setMessages(prev =>
-      prev.map(msg =>
-        msg.id === messageId ? { ...msg, isComplete: true } : msg
-      )
-    );
-    setIsTyping(false);
-    
-    if (currentMessageIndex < conversationFlow.length) {
-      displayNextMessage();
-    }
-  };
 
   const handleSend = () => {
     if (inputText.trim()) {
-      const userMessage = {
-        id: Date.now().toString(),
-        text: inputText,
-        sender: "user",
-        isComplete: true,
-      };
-      setMessages(prev => [...prev, userMessage]);
+      setMessages([
+        ...messages,
+        { id: Date.now().toString(), text: inputText, sender: "user" },
+      ]);
       setInputText("");
-      setIsTyping(true);
-
+      // Simulate a bot response
       setTimeout(() => {
-        const botMessage = {
-          id: (Date.now() + 1).toString(),
-          text: "I understand your question. Let me help you with that! What specific information would you like to know about recycling?",
-          sender: "bot",
-          isComplete: false,
-        };
-        setMessages(prev => [...prev, botMessage]);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            id: (Date.now() + 1).toString(),
+            text: "Welcome to ecoRojak! I’m Greenie, your dedicated assistant, here to guide you on your green journey. How can I help you today?",
+            sender: "bot",
+          },
+        ]);
       }, 1000);
     }
   };
@@ -178,14 +55,7 @@ export default function Greenie() {
           item.sender === "user" ? "bg-celeste" : "bg-[#EDEDED]"
         }`}
       >
-        {item.sender === "bot" && !item.isComplete ? (
-          <TypewriterMessage 
-            text={item.text} 
-            onComplete={() => handleMessageComplete(item.id)}
-          />
-        ) : (
-          <Text className="text-base">{item.text}</Text>
-        )}
+        <Text className="text-base">{item.text}</Text>
       </View>
       {item.sender === "user" && (
         <Image
@@ -204,7 +74,7 @@ export default function Greenie() {
       }}
     >
       <ImageBackground
-        source={require("@/assets/images/greenie-chat.jpg")}
+        source={require("@/assets/images/greenie-background.png")}
         className="h-[92%] flex-1 justify-center"
       >
         <Header
@@ -243,7 +113,6 @@ export default function Greenie() {
                 value={inputText}
                 onChangeText={setInputText}
                 placeholder="Type a message..."
-                editable={!isTyping}
               />
               <TouchableOpacity>
                 <Ionicons name="happy-outline" size={24} color="gray" />
@@ -255,7 +124,6 @@ export default function Greenie() {
             <TouchableOpacity
               className="bg-tiffany rounded-full p-3 ml-2 justify-center items-center"
               onPress={handleSend}
-              disabled={isTyping || !inputText.trim()}
             >
               <Ionicons name="send" size={20} color="white" />
             </TouchableOpacity>

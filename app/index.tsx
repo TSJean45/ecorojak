@@ -81,7 +81,7 @@ export default function SplashScreen() {
                 className="bg-green px-8 py-3 rounded-full"
                 onPress={() => router.push("/login")}
               >
-                <Text className="text-white font-semibold text-lg">Get Started</Text>
+                <Text className="text-white font-bold text-lg">Get Started</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>

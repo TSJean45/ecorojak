@@ -3,10 +3,23 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "@/components/Header";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function Pickup() {
   const insets = useSafeAreaInsets();
+
+  // Example coordinates for pickup and collector locations
+  const collectorLocation = {
+    latitude: 3.1155,
+    longitude: 101.6748,
+    title: "Collector",
+  };
+
+  const pickupLocation = {
+    latitude: 3.118239,
+    longitude: 101.676954,
+    title: "Pickup Location",
+  };
 
   return (
     <View
@@ -49,17 +62,18 @@ export default function Pickup() {
         {/* Map View */}
         <View className="h-48 mx-4 mt-4 rounded-lg overflow-hidden">
           <MapView
-            className="flex-1"
+            style={{ flex: 1 }}
             initialRegion={{
               latitude: 3.118239,
               longitude: 101.676954,
               latitudeDelta: 0.015,
               longitudeDelta: 0.015,
             }}
+            provider={PROVIDER_GOOGLE}
           >
             <Marker
-              coordinate={{ latitude: 3.1155, longitude: 101.6748 }}
-              title="Collector"
+              coordinate={collectorLocation}
+              title={collectorLocation.title}
             >
               <Image
                 source={require("../../assets/images/lorry.png")}
@@ -67,8 +81,8 @@ export default function Pickup() {
               />
             </Marker>
             <Marker
-              coordinate={{ latitude: 3.118239, longitude: 101.676954 }}
-              title="Pickup Location"
+              coordinate={pickupLocation}
+              title={pickupLocation.title}
             >
               <View>
                 <Image

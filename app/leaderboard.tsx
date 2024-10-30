@@ -20,13 +20,13 @@ const { width, height } = Dimensions.get("window");
 const cityIconMap: { [key: string]: any } = {
   johor: require("../assets/images/johor.png"),
   kl: require("../assets/images/kl.png"),
-  penang: require("../assets/images/georgetown.png"),
-  malacca: require("../assets/images/melaka.png"),
-  ipoh: require("../assets/images/ipoh.png"),
-  kuching: require("../assets/images/kuching.jpg"),
-  kotakinabalu: require("../assets/images/kota kinabalu.jpg"),
-  putrajaya: require("../assets/images/putrajaya.png"),
-  petalingjaya: require("../assets/images/pj.png"),
+  penang: require("../assets/images/kl.png"),
+  malacca: require("../assets/images/johor.png"),
+  ipoh: require("../assets/images/johor.png"),
+  kuching: require("../assets/images/johor.png"),
+  kotakinabalu: require("../assets/images/johor.png"),
+  putrajaya: require("../assets/images/johor.png"),
+  petalingjaya: require("../assets/images/johor.png"),
 };
 
 type LeaderboardEntry = {

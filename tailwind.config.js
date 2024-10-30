@@ -6,7 +6,6 @@ module.exports = {
       fontFamily: {
         sans: ['Inter-Regular', 'sans-serif'],
         bold: ['Inter-Bold'],   
-        semibold: ['Inter-Semibold'],   
       },
       colors: {
         tiffany: '#73D1C0',    

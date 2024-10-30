@@ -12,7 +12,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import Header from "@/components/Header";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 // Add this custom style array at the top of your file
 const mapStyle = [
@@ -170,7 +170,7 @@ export default function RideDetails() {
             ref={mapRef}
             style={{ flex: 1 }}
             initialRegion={midpoint}
-            mapType="standard"
+            provider={PROVIDER_GOOGLE}
             customMapStyle={mapStyle}
           >
             <Marker
@@ -215,12 +215,12 @@ export default function RideDetails() {
             {/* Address column */}
             <View className="flex-1">
               <View>
-                <Text className="text-md font-semibold">Kepong Central</Text>
+                <Text className="text-md font-bold">Kepong Central</Text>
                 <Text className="text-xs text-gray">Near Aeon Kepong</Text>
               </View>
 
               <View className="mt-11">
-                <Text className="text-md font-semibold">
+                <Text className="text-md font-bold">
                   Metro Prima
                 </Text>
                 <Text className="text-xs text-gray">Metro Prima Kepong</Text>
@@ -265,7 +265,7 @@ export default function RideDetails() {
                     source={require("@/assets/images/profile.png")}
                     className="w-10 h-10 rounded-full mr-3"
                   />
-                  <Text className="text-lg font-semibold">Sarah Lee</Text>
+                  <Text className="text-lg font-bold">Sarah Lee</Text>
                 </View>
                 <Ionicons name="chatbubble-outline" size={24} color="#000" />
               </View>
