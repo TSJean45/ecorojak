@@ -102,7 +102,7 @@ export default function WasteWizard() {
             <View className="flex-row justify-between">
               <TouchableOpacity 
                 className="bg-white rounded-2xl w-[48%] overflow-hidden"
-                onPress={() => router.push("/wastewizard/trashscanify")}
+                onPress={() => router.push("/wastewizard/detection")}
               >
                 <Image
                   source={require("../assets/images/trashscanify.png")}

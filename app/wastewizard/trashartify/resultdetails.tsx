@@ -21,7 +21,7 @@ const generateInstructions = async (category: string, prompt: string) => {
     console.log("Generating instructions for:", category, "with prompt:", prompt);
     
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/gpt2-large",  // Changed model
+      "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
       {
         method: "POST",
         headers: {
@@ -29,33 +29,22 @@ const generateInstructions = async (category: string, prompt: string) => {
           Authorization: `Bearer ${HUGGING_FACE_API_KEY}`,
         },
         body: JSON.stringify({
-          inputs: `Create a DIY craft tutorial.
-
-          Material: ${category}
-          Project: ${prompt}
-
-          MATERIALS NEEDED:
-          1. Clean ${category.toLowerCase()}
-          2. Scissors
-          3. Strong glue
-          4. Paint or markers
-          5. Decorative items
-
-          STEP-BY-STEP INSTRUCTIONS:
-          1. Clean and prepare your ${category.toLowerCase()}
-          2. Cut according to your design
-          3. Assemble the main structure
-          4. Add decorative elements
-          5. Let it dry completely
-
-          END`,
-          parameters: {
-            max_new_tokens: 200,
-            temperature: 0.7,
-            top_p: 0.9,
-            num_return_sequences: 1,
-            stop_sequence: "END"
-          }
+          inputs: `Create a DIY craft tutorial for making art from ${category}.
+          The specific craft idea is: ${prompt}
+          
+          Provide a detailed tutorial with materials and steps.
+          
+          Format the response exactly like this:
+          MATERIALS:
+          - Clean ${category}
+          - Scissors
+          - Glue
+          - Decorative items
+          
+          STEPS:
+          1. Prepare your materials
+          2. Create the base structure
+          3. Add decorative elements`,
         }),
       }
     );
@@ -64,34 +53,27 @@ const generateInstructions = async (category: string, prompt: string) => {
     console.log("Raw response:", result);
 
     // Parse the response text into materials and steps
-    const text = result[0]?.generated_text || '';
+    const text = result[0].generated_text;
+    const [materialsSection, stepsSection] = text.split('STEPS:');
     
-    // Extract materials between "MATERIALS NEEDED:" and "STEP-BY-STEP"
-    const materialsMatch = text.match(/MATERIALS NEEDED:([\s\S]*?)STEP-BY-STEP/);
-    const materials = materialsMatch ? 
-      materialsMatch[1]
-        .trim()
-        .split('\n')
-        .filter(item => item.trim())
-        .map(item => item.replace(/^\d+\.\s*/, '').trim())
-      : ['Clean ' + category, 'Scissors', 'Glue'];
+    const materials = materialsSection
+      .replace('MATERIALS:', '')
+      .trim()
+      .split('\n')
+      .filter(item => item.trim())
+      .map(item => item.replace('-', '').trim());
 
-    // Extract steps between "STEP-BY-STEP INSTRUCTIONS:" and "END"
-    const stepsMatch = text.match(/STEP-BY-STEP INSTRUCTIONS:([\s\S]*?)END/);
-    const steps = stepsMatch ?
-      stepsMatch[1]
-        .trim()
-        .split('\n')
-        .filter(item => item.trim())
-        .map(item => ({
-          title: item.replace(/^\d+\.\s*/, '').trim(),
-          details: []
-        }))
-      : [
-          { title: 'Clean and prepare materials', details: [] },
-          { title: 'Create your design', details: [] },
-          { title: 'Assemble your project', details: [] }
-        ];
+    const steps = stepsSection
+      .trim()
+      .split('\n')
+      .filter(item => item.trim())
+      .map(item => {
+        const [title, ...details] = item.replace(/^\d+\./, '').split(':');
+        return {
+          title: title.trim(),
+          details: details.length ? [details.join(':').trim()] : []
+        };
+      });
 
     return { materials, steps };
   } catch (error) {
@@ -100,33 +82,13 @@ const generateInstructions = async (category: string, prompt: string) => {
   }
 };
 
-const getImageDescription = async (imageUrl: string) => {
-  try {
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${HUGGING_FACE_API_KEY}`,
-        },
-        body: imageUrl.split(",")[1], // Remove the data:image/jpeg;base64, part
-      }
-    );
-
-    const result = await response.json();
-    return result[0]?.generated_text || "";
-  } catch (error) {
-    console.error("Error getting image description:", error);
-    return "";
-  }
-};
-
 const ResultDetails = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
-  const { category, generatedImage, prompt } = params;
+  const category = String(params.category || '');
+  const generatedImage = String(params.generatedImage || '');
+  const craftPrompt = String(params.prompt || '');
   const [materials, setMaterials] = useState([]);
   const [steps, setSteps] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -134,20 +96,17 @@ const ResultDetails = () => {
   useEffect(() => {
     const loadInstructions = async () => {
       try {
-        const { materials: mats, steps: stps } = await generateInstructions(
-          category,
-          prompt
-        );
+        const { materials: mats, steps: stps } = await generateInstructions(category, craftPrompt);
         setMaterials(mats);
         setSteps(stps);
       } catch (error) {
-        console.error("Failed to load instructions:", error);
+        console.error('Failed to load instructions:', error);
         // Set some default instructions if generation fails
-        setMaterials(["Main material", "Scissors", "Glue"]);
+        setMaterials(['Main material', 'Scissors', 'Glue']);
         setSteps([
-          { title: "Prepare materials", details: ["Gather all materials"] },
-          { title: "Create your design", details: ["Plan your project"] },
-          { title: "Assemble", details: ["Put everything together"] },
+          { title: 'Prepare materials', details: ['Gather all materials'] },
+          { title: 'Create your design', details: ['Plan your project'] },
+          { title: 'Assemble', details: ['Put everything together'] }
         ]);
       } finally {
         setIsLoading(false);
@@ -155,14 +114,14 @@ const ResultDetails = () => {
     };
 
     loadInstructions();
-  }, [category, prompt]);
+  }, [category, craftPrompt]);
 
   return (
     <View className="flex-1 bg-white">
       {/* Background Image with Header */}
       <View className="h-[20%] relative">
         <Image
-          source={require("../../assets/images/scandetails.png")}
+          source={require("@/assets/images/scandetails.png")}
           className="absolute w-full h-full"
         />
         <StatusBar barStyle="dark-content" />
@@ -171,25 +130,25 @@ const ResultDetails = () => {
         {/* Material Chip */}
         <View className="absolute bottom-4 left-4">
           <View className="bg-black px-4 py-2 rounded-full">
-            <Text className="font-bold text-white">Cardboard</Text>
+            <Text className="font-bold text-white">{category || 'Material'}</Text>
           </View>
         </View>
       </View>
 
       {/* Content Container */}
       <View className="flex-1 bg-white rounded-t-2xl">
-        <ScrollView
+        <ScrollView 
           className="px-4 pt-6"
-          contentContainerStyle={{
-            paddingBottom: insets.bottom + 80,
+          contentContainerStyle={{ 
+            paddingBottom: insets.bottom + 80 
           }}
         >
           {/* Title and Main Image */}
           <Text className="text-lg font-bold mb-2">
-            Generated Ideas With Cardboard:
+            Generated Ideas With {category || 'Material'}:
           </Text>
           <Image
-            source={require("../../assets/images/paper.png")}
+            source={{ uri: generatedImage }}
             className="w-full h-48 rounded-lg mb-2"
             resizeMode="contain"
           />
@@ -198,7 +157,7 @@ const ResultDetails = () => {
           <View
             className="mb-2"
             style={{
-              backgroundColor: "white",
+              backgroundColor: 'white',
               marginVertical: 10,
               borderRadius: 8,
               shadowColor: "#000",
@@ -216,9 +175,7 @@ const ResultDetails = () => {
             </View>
             <View className="bg-white px-4 py-3 rounded-b-lg">
               {materials.map((material, index) => (
-                <Text key={index} className="text-xs">
-                  {material}
-                </Text>
+                <Text key={index} className="text-xs">{material}</Text>
               ))}
             </View>
           </View>
@@ -227,7 +184,7 @@ const ResultDetails = () => {
           <View
             className="mb-2"
             style={{
-              backgroundColor: "white",
+              backgroundColor: 'white',
               marginVertical: 10,
               borderRadius: 8,
               shadowColor: "#000",
@@ -246,13 +203,9 @@ const ResultDetails = () => {
             <View className="bg-white px-4 py-3 rounded-b-lg">
               {steps.map((step, index) => (
                 <View key={index} className="mb-2">
-                  <Text style={{ fontWeight: "bold" }} className="text-xs">
-                    {step.title}
-                  </Text>
+                  <Text style={{ fontWeight: 'bold' }} className="text-xs">{step.title}</Text>
                   {step.details.map((detail, detailIndex) => (
-                    <Text key={detailIndex} className="text-xs">
-                      {detail}
-                    </Text>
+                    <Text key={detailIndex} className="text-xs">{detail}</Text>
                   ))}
                 </View>
               ))}
@@ -263,7 +216,7 @@ const ResultDetails = () => {
           <TouchableOpacity
             className="bg-green py-3 rounded-full mb-6"
             onPress={() => {
-              router.push("/wastewizard/trashartify");
+              router.push("/wastewizard/trashartify"); 
             }}
           >
             <Text className="text-white text-center font-bold">
