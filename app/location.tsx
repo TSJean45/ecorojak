@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import { Chip } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"; // For GPS and bookmark icons
+import * as Location from 'expo-location';
 
 type CategoryKey = "recycle" | "vending" | "community"; // Updated type
 
@@ -25,7 +26,7 @@ type Route = {
   coordinates: { latitude: number; longitude: number; }[];
 };
 
-export default function Location() {
+export default function LocationScreen() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey | null>(
     null
   );
@@ -42,8 +43,9 @@ export default function Location() {
   ];
 
   // Add new state for current location
-  const [currentLocation] = useState({
-    latitude: 3.2087,    // Kepong coordinates
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 3.2087,    // Default Kepong coordinates
     longitude: 101.6341,
   });
 
@@ -116,6 +118,37 @@ export default function Location() {
   const [showRoutes, setShowRoutes] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
 
+  // Add useEffect for location permission and tracking
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      });
+
+      Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000,
+          distanceInterval: 10
+        },
+        (location) => {
+          setCurrentLocation({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude
+          });
+        }
+      );
+    })();
+  }, []);
+
   const handleCategorySelect = (category: CategoryKey) => {
     setSelectedCategory(category);
     if (category === "vending") {
@@ -185,6 +218,19 @@ export default function Location() {
     setSelectedRoute(route);
   };
 
+  // Add mapRef at the top of your component
+  const mapRef = useRef<MapView>(null);  // Add this
+
+  // Add this function to center the map
+  const centerOnLocation = () => {
+    mapRef.current?.animateToRegion({
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
+      latitudeDelta: 0.0222,
+      longitudeDelta: 0.0121,
+    }, 1000);  // 1000ms animation duration
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Header title="Location" showBackButton={true} />
@@ -193,13 +239,15 @@ export default function Location() {
         style={{ paddingBottom: insets.bottom + 60 }}
       >
         <MapView
+          ref={mapRef}  // Add this
           style={{ flex: 1 }}
           initialRegion={{
-            latitude: 3.2087,        // Kepong
-            longitude: 101.6341,
-            latitudeDelta: 0.0222,   // Adjusted for better zoom level
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            latitudeDelta: 0.0222,
             longitudeDelta: 0.0121,
           }}
+          showsUserLocation={true}
         >
           {/* Current Location Marker */}
           <Marker
@@ -208,7 +256,7 @@ export default function Location() {
           >
             <Image 
               source={require('../assets/images/tapir-pin.png')} 
-              style={{ width: 40, height: 40 }}  // Increased size
+              style={{ width: 40, height: 40 }}
               resizeMode="contain"
             />
           </Marker>
@@ -251,8 +299,11 @@ export default function Location() {
               />
               <TextInput placeholder="Search" style={{ flex: 1 }} />
             </View>
-            <TouchableOpacity className="ml-2 bg-white p-2.5 rounded-md">
-              <MaterialIcons name="gps-fixed" size={24} color="gree" />
+            <TouchableOpacity 
+              className="ml-2 bg-white p-2.5 rounded-md"
+              onPress={centerOnLocation}  // Add this
+            >
+              <MaterialIcons name="gps-fixed" size={24} color="green" />
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 10 }}>
