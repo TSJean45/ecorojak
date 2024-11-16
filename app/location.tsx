@@ -9,7 +9,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Linking,
-  Modal,
 } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Header from "../components/Header";
@@ -45,6 +44,10 @@ type HealthyRoute = {
     longitude: number;
     description: string;
   }>;
+  options: {
+    distance: 'short' | 'medium' | 'long';
+    duration: '15' | '30' | '45' | '60';
+  };
 };
 
 export default function LocationScreen() {
@@ -334,115 +337,12 @@ export default function LocationScreen() {
     return url;
   };
 
-  // Add these state variables at the top
-  const [showPreferences, setShowPreferences] = useState(false);
-  const [preferences, setPreferences] = useState({
-    distance: 'medium', // short, medium, long
-    difficulty: 'moderate', // easy, moderate, challenging
-    duration: '30', // in minutes
+  // Add these states at the top
+  const [showOptions, setShowOptions] = useState(false);
+  const [routeOptions, setRouteOptions] = useState({
+    distance: 'medium',
+    duration: '30'
   });
-
-  // Add this component for the preferences modal
-  const RoutePreferencesModal = ({ visible, onClose, onSave }) => {
-    const [tempPrefs, setTempPrefs] = useState(preferences);
-
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        onRequestClose={onClose}
-      >
-        <View className="flex-1 justify-end">
-          <View className="bg-white rounded-t-3xl p-4">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-xl font-bold">Route Preferences</Text>
-              <TouchableOpacity onPress={onClose}>
-                <MaterialIcons name="close" size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
-
-            {/* Distance Preference */}
-            <View className="mb-4">
-              <Text className="font-bold mb-2">Distance</Text>
-              <View className="flex-row space-x-2">
-                {['short', 'medium', 'long'].map((option) => (
-                  <TouchableOpacity
-                    key={option}
-                    className={`flex-1 py-2 px-4 rounded-full ${
-                      tempPrefs.distance === option ? 'bg-green-500' : 'bg-gray-200'
-                    }`}
-                    onPress={() => setTempPrefs({ ...tempPrefs, distance: option })}
-                  >
-                    <Text className={`text-center ${
-                      tempPrefs.distance === option ? 'text-white' : 'text-gray-700'
-                    }`}>
-                      {option.charAt(0).toUpperCase() + option.slice(1)}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            {/* Difficulty Preference */}
-            <View className="mb-4">
-              <Text className="font-bold mb-2">Difficulty</Text>
-              <View className="flex-row space-x-2">
-                {['easy', 'moderate', 'challenging'].map((option) => (
-                  <TouchableOpacity
-                    key={option}
-                    className={`flex-1 py-2 px-4 rounded-full ${
-                      tempPrefs.difficulty === option ? 'bg-green-500' : 'bg-gray-200'
-                    }`}
-                    onPress={() => setTempPrefs({ ...tempPrefs, difficulty: option })}
-                  >
-                    <Text className={`text-center ${
-                      tempPrefs.difficulty === option ? 'text-white' : 'text-gray-700'
-                    }`}>
-                      {option.charAt(0).toUpperCase() + option.slice(1)}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            {/* Duration Preference */}
-            <View className="mb-6">
-              <Text className="font-bold mb-2">Duration (minutes)</Text>
-              <View className="flex-row space-x-2">
-                {['15', '30', '45', '60'].map((option) => (
-                  <TouchableOpacity
-                    key={option}
-                    className={`flex-1 py-2 px-4 rounded-full ${
-                      tempPrefs.duration === option ? 'bg-green-500' : 'bg-gray-200'
-                    }`}
-                    onPress={() => setTempPrefs({ ...tempPrefs, duration: option })}
-                  >
-                    <Text className={`text-center ${
-                      tempPrefs.duration === option ? 'text-white' : 'text-gray-700'
-                    }`}>
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            {/* Save Button */}
-            <TouchableOpacity
-              className="bg-green-500 py-3 rounded-lg"
-              onPress={() => {
-                onSave(tempPrefs);
-                onClose();
-              }}
-            >
-              <Text className="text-white font-bold text-center">Save Preferences</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -653,105 +553,93 @@ export default function LocationScreen() {
       <View className="absolute right-4 bottom-52 flex-col space-y-4">
         <TouchableOpacity
           className="bg-white p-3 rounded-full shadow-lg"
-          onPress={() => setShowRoutes(!showRoutes)}
+          onPress={() => setShowOptions(true)}
         >
           <MaterialIcons name="directions-walk" size={24} color="green" />
         </TouchableOpacity>
-        
-        <TouchableOpacity
-          className="bg-white p-3 rounded-full shadow-lg"
-          onPress={async () => {
-            console.log('Initial route generation clicked');
-            setIsGeneratingRoute(true);
-            try {
-              const route = await generateHealthyRoute(currentLocation);
-              console.log('Route generated successfully:', route);
-              setHealthyRoute(route);
-              setSelectedRoute({
-                id: 'ai-route',
-                coordinates: route.waypoints
-              });
-              setShowHealthyRoute(true);
-            } catch (error) {
-              console.error('Error in initial route generation:', error);
-            } finally {
-              setIsGeneratingRoute(false);
-            }
-          }}
-          disabled={isGeneratingRoute}
-        >
-          {isGeneratingRoute ? (
-            <ActivityIndicator color="green" />
-          ) : (
-            <MaterialIcons name="directions-walk" size={24} color="green" />
-          )}
-        </TouchableOpacity>
       </View>
 
-      {/* Routes Bottom Sheet */}
-      {showRoutes && (
-        <View
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
-          style={{ height: 280, paddingBottom: insets.bottom + 90 }}
-        >
-          <View className="p-3">
-            <View className="flex-row justify-between items-center mb-1">
-              <Text className="text-lg font-bold">Suggested Walking Routes</Text>
-              <TouchableOpacity 
-                onPress={() => setShowRoutes(false)}
-                className="p-2"
-              >
-                <MaterialIcons name="close" size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={walkingRoutes}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  className="mr-4 bg-white rounded-lg p-2 mb-2"
-                  style={{ 
-                    width: 200,
-                    height: 130,
-                    // iOS shadow
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    // Android shadow
-                    elevation: 5,
-                  }}
-                  onPress={() => handleRouteSelect(item)}
-                >
-                  <Text className="font-bold text-base mb-1">{item.name}</Text>
-                  <View className="flex-row items-center mb-1">
-                    <MaterialIcons name="straighten" size={16} color="gray" />
-                    <Text className="ml-1 text-gray-600">{item.distance}</Text>
-                  </View>
-                  <View className="flex-row items-center">
-                    <MaterialIcons name="access-time" size={16} color="gray" />
-                    <Text className="ml-1 text-gray-600">{item.duration}</Text>
-                  </View>
-                  {selectedRoute?.id === item.id && (
-                    <TouchableOpacity 
-                      className="mt-2 bg-green py-2 rounded-md items-center"
-                      onPress={() => {
-                        // Handle start navigation
-                        console.log('Starting navigation for route:', item.name);
-                      }}
-                    >
-                      <Text className="text-white font-bold">Start!</Text>
-                    </TouchableOpacity>
-                  )}
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item.id}
-            />
+      {showOptions && (
+        <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-4"
+          style={{ marginBottom: 90 }}>
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-xl font-bold">Route Options</Text>
+            <TouchableOpacity onPress={() => setShowOptions(false)}>
+              <MaterialIcons name="close" size={24} color="gray" />
+            </TouchableOpacity>
           </View>
+
+          {/* Distance Options */}
+          <View className="mb-4">
+            <Text className="font-bold mb-2">Distance</Text>
+            <View className="flex-row space-x-2">
+              {['short', 'medium', 'long'].map((option) => (
+                <TouchableOpacity
+                  key={option}
+                  className={`flex-1 py-2 px-4 rounded-full ${
+                    routeOptions.distance === option ? 'bg-green' : 'bg-gray'
+                  }`}
+                  onPress={() => setRouteOptions(prev => ({ ...prev, distance: option }))}
+                >
+                  <Text className={`text-center ${
+                    routeOptions.distance === option ? 'text-white' : 'text-gray-700'
+                  }`}>
+                    {option === 'short' ? '1-2 km' : option === 'medium' ? '2-3 km' : '3-4 km'}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Duration Options */}
+          <View className="mb-4">
+            <Text className="font-bold mb-2">Duration</Text>
+            <View className="flex-row space-x-2">
+              {['15', '30', '45', '60'].map((option) => (
+                <TouchableOpacity
+                  key={option}
+                  className={`flex-1 py-2 px-4 rounded-full ${
+                    routeOptions.duration === option ? 'bg-green' : 'bg-gray'
+                  }`}
+                  onPress={() => setRouteOptions(prev => ({ ...prev, duration: option }))}
+                >
+                  <Text className={`text-center ${
+                    routeOptions.duration === option ? 'text-white' : 'text-gray'
+                  }`}>
+                    {option} min
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Generate Button */}
+          <TouchableOpacity
+            className="bg-green py-3 rounded-lg mt-4"
+            onPress={async () => {
+              setShowOptions(false);
+              setIsGeneratingRoute(true);
+              try {
+                // Store the current options in healthyRoute
+                const route = await generateHealthyRoute(currentLocation, routeOptions);
+                setHealthyRoute({
+                  ...route,
+                  options: routeOptions // Store the options here
+                });
+                setSelectedRoute({
+                  id: 'ai-route',
+                  coordinates: route.waypoints
+                });
+                setShowHealthyRoute(true);
+              } catch (error) {
+                console.error('Error in route generation:', error);
+              } finally {
+                setIsGeneratingRoute(false);
+              }
+            }}
+          >
+            <Text className="text-white font-bold text-center">Generate Route</Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -808,9 +696,15 @@ export default function LocationScreen() {
                     console.log('Regenerate button clicked');
                     setIsGeneratingRoute(true);
                     try {
-                      const newRoute = await generateHealthyRoute(currentLocation);
-                      console.log('New route generated successfully:', newRoute);
-                      setHealthyRoute(newRoute);
+                      // Use the stored options from the current route
+                      const newRoute = await generateHealthyRoute(
+                        currentLocation, 
+                        healthyRoute?.options || { distance: 'medium', duration: '30' }
+                      );
+                      setHealthyRoute({
+                        ...newRoute,
+                        options: healthyRoute?.options // Keep the same options
+                      });
                       setSelectedRoute({
                         id: 'ai-route',
                         coordinates: newRoute.waypoints
@@ -863,27 +757,6 @@ export default function LocationScreen() {
           </View>
         </View>
       )}
-
-      {/* Update your logo TouchableOpacity to show the preferences modal */}
-      <TouchableOpacity 
-        onPress={() => setShowPreferences(true)}
-        className="absolute top-10 left-4 z-10"
-      >
-        <Image
-          source={require("../assets/images/Logo.png")}
-          className="w-12 h-12 rounded-full"
-        />
-      </TouchableOpacity>
-
-      {/* Add the preferences modal to your render */}
-      <RoutePreferencesModal
-        visible={showPreferences}
-        onClose={() => setShowPreferences(false)}
-        onSave={(newPrefs) => {
-          setPreferences(newPrefs);
-          // You might want to generate a new route here with the new preferences
-        }}
-      />
     </View>
   );
 }
