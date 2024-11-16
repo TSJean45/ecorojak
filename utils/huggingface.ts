@@ -58,34 +58,47 @@ const getFallbackRoute = (currentLocation: {latitude: number; longitude: number}
 };
 
 export const generateHealthyRoute = async (
-  currentLocation: { latitude: number; longitude: number }
+  currentLocation: { latitude: number; longitude: number },
+  options: {
+    distance: 'short' | 'medium' | 'long';
+    intensity: 'casual' | 'moderate' | 'challenging';
+  }
 ): Promise<HealthyRoute> => {
   try {
     console.log('Starting route generation with location:', currentLocation);
     
-    // Generate random radius between 200-500 meters
-    const radius = (Math.random() * 0.003) + 0.002;
-    
-    // Generate random angles for waypoints
-    const angles = Array.from({length: 3}, () => Math.random() * 2 * Math.PI);
-    
-    // Create waypoints
+    // Adjust radius values for more accurate distances
+    // 0.001 is roughly 100m, so we'll adjust accordingly
+    const baseRadius = options.distance === 'short' ? 0.0008 : // For 0-2km routes
+                      options.distance === 'long' ? 0.002 :    // For 3-4km routes
+                      0.0015;                                  // For 2-3km routes (medium)
+
+    // Adjust number of waypoints based on intensity
+    const numPoints = options.intensity === 'casual' ? 3 :
+                     options.intensity === 'challenging' ? 5 :
+                     4; // moderate
+
+    // Reduce random factor to keep distances more consistent
+    const randomFactor = options.intensity === 'casual' ? 0.1 :
+                        options.intensity === 'challenging' ? 0.3 :
+                        0.2; // moderate
+
+    // Generate waypoints in a pattern
+    const angles = Array.from(
+      { length: numPoints }, 
+      (_, i) => (i / numPoints) * 2 * Math.PI
+    );
+
     const waypoints = [
-      // Start point
-      {
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude
-      },
-      // Random waypoints
-      ...angles.map(angle => ({
-        latitude: currentLocation.latitude + (radius * Math.cos(angle)),
-        longitude: currentLocation.longitude + (radius * Math.sin(angle))
-      })),
-      // Return to start
-      {
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude
-      }
+      currentLocation,
+      ...angles.map(angle => {
+        const r = baseRadius * (1 + (Math.random() - 0.5) * randomFactor);
+        return {
+          latitude: currentLocation.latitude + (r * Math.cos(angle)),
+          longitude: currentLocation.longitude + (r * Math.sin(angle))
+        };
+      }),
+      currentLocation // Return to start
     ];
 
     console.log('Generated waypoints:', waypoints);
@@ -119,16 +132,35 @@ export const generateHealthyRoute = async (
         "Health Trek Path"
       ];
 
-      // Generate random highlights based on distance
+      // Update highlights based on intensity
+      const intensityHighlights = {
+        casual: [
+          "Easy walking paths",
+          "Gentle slopes",
+          "Well-maintained sidewalks",
+          "Relaxed pace friendly"
+        ],
+        moderate: [
+          "Mixed terrain",
+          "Some elevation changes",
+          "Varied scenery",
+          "Balanced workout"
+        ],
+        challenging: [
+          "Steeper sections",
+          "Varied elevation",
+          "Longer stretches",
+          "More intense workout"
+        ]
+      };
+
+      // Add intensity-specific highlights to the pool
       const possibleHighlights = [
+        ...intensityHighlights[options.intensity],
         "Tree-lined streets",
         "Quiet neighborhood paths",
-        "Local gardens view",
-        "Pleasant walking terrain",
-        "Peaceful residential area",
         "Good sidewalk coverage",
-        "Interesting architecture",
-        "Morning/evening friendly"
+        "Interesting architecture"
       ];
 
       // Randomly select 4 highlights
@@ -141,7 +173,9 @@ export const generateHealthyRoute = async (
         distance: `${distance.toFixed(1)} km`,
         duration: `${Math.round(duration)} mins`,
         calories: `${Math.round(duration * 4.5)} cal`,
-        difficulty: distance < 1 ? "Easy" : distance < 2 ? "Moderate" : "Challenging",
+        difficulty: distance < 2 ? "Easy" :    // 0-2km
+                     distance < 3 ? "Moderate" : // 2-3km
+                     "Challenging",              // 3km+
         highlights: selectedHighlights,
         waypoints: points.map(p => ({
           latitude: p.lat || p.latitude,

@@ -42,11 +42,10 @@ type HealthyRoute = {
   waypoints: Array<{
     latitude: number;
     longitude: number;
-    description: string;
   }>;
   options: {
     distance: 'short' | 'medium' | 'long';
-    duration: '15' | '30' | '45' | '60';
+    routeType: 'loop' | 'out-and-back' | 'explore';
   };
 };
 
@@ -323,16 +322,16 @@ export default function LocationScreen() {
     // End point
     const destination = `${waypoints[waypoints.length-1].latitude},${waypoints[waypoints.length-1].longitude}`;
     
-    // Select only key waypoints (every 10th point or so)
+    // Take every 5th point instead of every 10th point
     const middlePoints = waypoints
-      .filter((_, index) => index % 10 === 0) // Take every 10th point
+      .filter((_, index) => index % 5 === 0) // Changed from 10 to 5
       .slice(1, -1) // Remove start and end points
       .map(wp => `${wp.latitude},${wp.longitude}`)
       .join('|');
 
     const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${middlePoints}&travelmode=walking`;
     
-    console.log('Simplified Google Maps URL:', url);
+    console.log('Google Maps URL:', url);
     
     return url;
   };
@@ -340,8 +339,8 @@ export default function LocationScreen() {
   // Add these states at the top
   const [showOptions, setShowOptions] = useState(false);
   const [routeOptions, setRouteOptions] = useState({
-    distance: 'medium',
-    duration: '30'
+    distance: 'medium' as 'short' | 'medium' | 'long',
+    intensity: 'casual' as 'casual' | 'moderate' | 'challenging'
   });
 
   return (
@@ -577,36 +576,42 @@ export default function LocationScreen() {
                 <TouchableOpacity
                   key={option}
                   className={`flex-1 py-2 px-4 rounded-full ${
-                    routeOptions.distance === option ? 'bg-green' : 'bg-gray'
+                    routeOptions.distance === option ? 'bg-green' : 'bg-gray-200'
                   }`}
                   onPress={() => setRouteOptions(prev => ({ ...prev, distance: option }))}
                 >
                   <Text className={`text-center ${
                     routeOptions.distance === option ? 'text-white' : 'text-gray-700'
                   }`}>
-                    {option === 'short' ? '1-2 km' : option === 'medium' ? '2-3 km' : '3-4 km'}
+                    {option === 'short' ? '0-2 km' : 
+                     option === 'medium' ? '2-3 km' : 
+                     '3-4 km'}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
 
-          {/* Duration Options */}
+          {/* Intensity Options */}
           <View className="mb-4">
-            <Text className="font-bold mb-2">Duration</Text>
+            <Text className="font-bold mb-2">Intensity</Text>
             <View className="flex-row space-x-2">
-              {['15', '30', '45', '60'].map((option) => (
+              {[
+                { value: 'casual', label: 'Casual' },
+                { value: 'moderate', label: 'Moderate' },
+                { value: 'challenging', label: 'Challenging' }
+              ].map((option) => (
                 <TouchableOpacity
-                  key={option}
+                  key={option.value}
                   className={`flex-1 py-2 px-4 rounded-full ${
-                    routeOptions.duration === option ? 'bg-green' : 'bg-gray'
+                    routeOptions.intensity === option.value ? 'bg-green' : 'bg-gray-200'
                   }`}
-                  onPress={() => setRouteOptions(prev => ({ ...prev, duration: option }))}
+                  onPress={() => setRouteOptions(prev => ({ ...prev, intensity: option.value }))}
                 >
                   <Text className={`text-center ${
-                    routeOptions.duration === option ? 'text-white' : 'text-gray'
+                    routeOptions.intensity === option.value ? 'text-white' : 'text-gray-700'
                   }`}>
-                    {option} min
+                    {option.label}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -648,8 +653,8 @@ export default function LocationScreen() {
           style={{ 
             marginBottom: 90 // Lift above nav bar
           }}>
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-xl font-bold">AI Generated Health Route</Text>
+          <View className="flex-row justify-between items-center mb-2">
+            <Text className="text-xl font-bold">{healthyRoute.name}</Text>
             <TouchableOpacity 
               onPress={() => {
                 setShowHealthyRoute(false);
@@ -661,8 +666,7 @@ export default function LocationScreen() {
             </TouchableOpacity>
           </View>
 
-          <View className="bg-white rounded-lg p-4 shadow-md space-y-4">
-            <Text className="text-lg font-bold">{healthyRoute.name}</Text>
+          <View className="bg-white rounded-lg p-2 shadow-md space-y-4">
             
             <View className="flex-row justify-between">
               <View className="flex-row items-center">
@@ -699,7 +703,7 @@ export default function LocationScreen() {
                       // Use the stored options from the current route
                       const newRoute = await generateHealthyRoute(
                         currentLocation, 
-                        healthyRoute?.options || { distance: 'medium', duration: '30' }
+                        healthyRoute?.options || { distance: 'medium', routeType: 'loop' }
                       );
                       setHealthyRoute({
                         ...newRoute,
@@ -745,14 +749,6 @@ export default function LocationScreen() {
                   </Text>
                 </TouchableOpacity>
               </View>
-
-              {/* Hide button */}
-              <TouchableOpacity 
-                className="bg-gray-500 py-3 rounded-lg items-center"
-                onPress={() => setShowHealthyRoute(false)}
-              >
-                <Text className="text-white font-bold">Hide Details</Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>
