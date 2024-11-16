@@ -2,95 +2,145 @@ import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
+  Modal,
+  Text,
+  Image,
   StatusBar,
-  Dimensions,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Camera } from 'expo-camera/legacy';
 
-const MindarLens: React.FC = () => {
+const MindarLens = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const { width, height } = Dimensions.get('window');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
-  const injectedJavaScript = `
-    (function() {
-      const style = document.createElement('style');
-      style.textContent = \`
-        body, html {
-          margin: 0 !important;
-          padding: 0 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          overflow: hidden !important;
-        }
-        iframe {
-          width: 100vw !important;
-          height: 100vh !important;
-          border: none !important;
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-        }
-      \`;
-      document.head.appendChild(style);
+  React.useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
     })();
-    true;
-  `;
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   return (
-    <View className="flex-1 bg-black">
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar translucent backgroundColor="transparent" />
       
-      <View className="flex-1 w-full h-full bg-transparent">
-        <WebView
-          source={{ uri: 'https://0c42-180-75-249-108.ngrok-free.app/ar-content/index.html' }}
-          className="flex-1"
+      <Camera style={{ flex: 1 }}>
+        
+        {/* Marker in center of screen */}
+        <TouchableOpacity 
           style={{
-            width: width,
-            height: height,
-            backgroundColor: 'transparent',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -32,
+            marginLeft: -32,
+            width: 64,
+            height: 64,
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-          injectedJavaScript={injectedJavaScript}
-          onMessage={(event) => {
-            console.log('WebView message:', event.nativeEvent.data);
-          }}
-          onLoadStart={() => setIsLoading(true)}
-          onLoadEnd={() => setIsLoading(false)}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          mediaPlaybackRequiresUserAction={false}
-          allowsInlineMediaPlayback={true}
-          allowsFullscreenVideo={true}
-          originWhitelist={['*']}
-          mixedContentMode="always"
-          androidLayerType="hardware"
-          bounces={false}
-          scrollEnabled={false}
-          scalesPageToFit={false}
-          startInLoadingState={true}
-          automaticallyAdjustContentInsets={false}
-          contentInset={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          cacheEnabled={false}
-          cacheMode="LOAD_NO_CACHE"
-          useWebKit={true}
-        />
-      </View>
+          onPress={() => setModalVisible(true)}
+        >
+          <View style={{
+            width: 64,
+            height: 64,
+            borderWidth: 2,
+            borderColor: 'white',
+            borderRadius: 32,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <View style={{
+              width: 12,
+              height: 12,
+              backgroundColor: 'white',
+              borderRadius: 6,
+            }} />
+          </View>
+        </TouchableOpacity>
 
-      <SafeAreaView className="absolute top-0 left-0 right-0">
-        <View className="flex-row justify-between items-center m-4">
-          <TouchableOpacity
-            onPress={() => router.back()}
-            className="bg-white/80 rounded-full p-2"
-          >
-            <Ionicons name="arrow-back" size={24} color="black" />
-          </TouchableOpacity>
+        {/* Back button */}
+        <SafeAreaView style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+        }}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            margin: 16,
+          }}>
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.8)',
+                borderRadius: 20,
+                padding: 8,
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Camera>
+
+      {/* Restaurant Info Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={{
+          flex: 1,
+          justifyContent: 'flex-end'
+        }}>
+          <View style={{
+            paddingHorizontal: 16,
+            marginBottom: 0,
+            position: 'relative',
+          }}>
+            <TouchableOpacity 
+              style={{
+                position: 'absolute',
+                top: 80,
+                right: 24,
+                zIndex: 1,
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                borderRadius: 20,
+                padding: 8,
+              }}
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+
+            <Image
+              source={require('../../assets/images/modal.png')}
+              style={{
+                width: '100%',
+                height: 400,
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+              }}
+              resizeMode="contain"
+            />
+          </View>
         </View>
-      </SafeAreaView>
+      </Modal>
     </View>
   );
 };

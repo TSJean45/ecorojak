@@ -50,22 +50,11 @@ const EcoLens: React.FC = () => {
         <TouchableOpacity
           className="bg-green rounded-2xl py-2 items-center mb-3"
           onPress={() => {
-            router.push("/ecolens/landmarkfinder");
-          }}
-        >
-          <Text className="text-white font-bold text-lg">
-            Start AR Experience
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          className="bg-blue-500 rounded-2xl py-2 items-center"
-          onPress={() => {
             router.push("/ecolens/mindarlens");
           }}
         >
           <Text className="text-white font-bold text-lg">
-            Try MindAR Lens
+            Start AR Experience
           </Text>
         </TouchableOpacity>
       </View>
