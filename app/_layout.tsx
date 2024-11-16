@@ -9,7 +9,7 @@ export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const pathname = usePathname();
 
-  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar', '/wastewizard/detection/camera', '/wastewizard/trashartify/camera'];
+  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar', '/wastewizard/detection/camera', '/wastewizard/trashartify/camera', '/ecolens/mindarlens'];
   const excludedPathsForChat = ['/', '/greenie', '/verification', '/signup', '/login', '/avatar', '/home'];
 
   useEffect(() => {
