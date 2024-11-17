@@ -11,7 +11,7 @@ const SplineTest = () => {
       <Header title="Spline Test" showBackButton={true} />
       
       <WebView
-        source={{ uri: 'https://harmonious-kleicha-ea05de.netlify.app/' }}
+        source={{ uri: 'https://my.spline.design/ecorojak-dbe5871171c1ba0ccb7348c659e01db7/' }}
         style={{ width, height: height * 0.8 }}
         javaScriptEnabled={true}
         domStorageEnabled={true}

@@ -83,7 +83,7 @@ export default function TransitTogether() {
               key={option.id}
               className="w-[48%] p-4 rounded-xl mb-4"
               style={{ backgroundColor: option.color + '10' }}
-              onPress={() => router.push(`/TransitTogether/${option.id}`)}
+              onPress={() => router.push(`/transittogether/${option.id}`)}
             >
               <View>
                 <View className="flex-row items-center justify-between">
