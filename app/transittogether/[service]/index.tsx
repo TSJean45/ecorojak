@@ -42,7 +42,7 @@ export default function TransitService() {
           <Text className="text-lg font-semibold mb-2">Select Route</Text>
           <TouchableOpacity 
             className="flex-row items-center p-3 bg-gray-100 rounded-lg"
-            onPress={() => router.push(`/transit/${service}/routes`)}
+            onPress={() => router.push(`/transittogether/${service}/routes`)}
           >
             <Ionicons name="map-outline" size={24} color="#666" />
             <Text className="ml-2 flex-1">
@@ -55,7 +55,7 @@ export default function TransitService() {
         {/* Add Update Button */}
         <TouchableOpacity 
           className="bg-blue-500 p-4 rounded-xl mb-4"
-          onPress={() => router.push(`/transit/${service}/report`)}
+          onPress={() => router.push(`/transittogether/${service}/report`)}
         >
           <Text className="text-white text-center font-semibold">
             Report Current Status

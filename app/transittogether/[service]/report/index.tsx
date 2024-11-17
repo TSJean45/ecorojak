@@ -57,7 +57,7 @@ export default function Report() {
         {/* Route Selection */}
         <TouchableOpacity
           className="flex-row items-center justify-between p-4 bg-gray-50 rounded-xl mb-6"
-          onPress={() => router.push(`/TransitTogether/${service}/routes`)}
+          onPress={() => router.push(`/transittogether/${service}/routes`)}
         >
           <View className="flex-row items-center">
             <Ionicons name="map-outline" size={24} color="#666" />

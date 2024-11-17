@@ -44,7 +44,7 @@ export default function TransitTogether() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <Header
         title="TransitTogether"
         leftButton={{
@@ -123,6 +123,6 @@ export default function TransitTogether() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
