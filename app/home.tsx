@@ -251,6 +251,16 @@ export default function Home() {
             <Text className="text-xs font-bold mt-1">CarbonTraveller</Text>
           </TouchableOpacity>
           <TouchableOpacity
+              onPress={() => router.push("/transittogether")}
+              className="items-center mr-3"
+            >
+              <Image
+                source={require("../assets/images/transittogether-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1">TransitTogether</Text>
+            </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => router.push("/greenmart")}
             className="items-center mr-3"
           >
@@ -270,16 +280,6 @@ export default function Home() {
             />
             <Text className="text-xs font-bold mt-1">CityPulse</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-              onPress={() => router.push("/transittogether")}
-              className="items-center mr-3"
-            >
-              <Image
-                source={require("../assets/images/carbontraveller-home.png")}
-                className="w-16 h-16"
-              />
-              <Text className="text-xs font-bold mt-1">TransitTogether</Text>
-            </TouchableOpacity>
         </ScrollView>
 
         {/* Events Section */}
