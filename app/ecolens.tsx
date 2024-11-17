@@ -48,9 +48,9 @@ const EcoLens: React.FC = () => {
         />
 
         <TouchableOpacity
-          className="bg-green rounded-2xl py-2 items-center"
+          className="bg-green rounded-2xl py-2 items-center mb-3"
           onPress={() => {
-            router.push("/ecolens/landmarkfinder");
+            router.push("/ecolens/mindarlens");
           }}
         >
           <Text className="text-white font-bold text-lg">

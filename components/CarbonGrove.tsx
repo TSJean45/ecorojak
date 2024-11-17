@@ -12,6 +12,7 @@ import {
 import { ProgressBar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import CoinSVG from "../assets/images/coin.svg";
+import WebView from "react-native-webview";
 
 interface MissionItemProps {
   title: string;
@@ -153,7 +154,7 @@ const CarbonGrove: React.FC = () => {
         </View>
       </View>
 
-      <View className="flex items-center mb-4">
+      <View className="flex items-center">
         <View
           className="w-[90%] bg-green p-3 rounded-2xl shadow-lg"
           style={{
@@ -199,13 +200,7 @@ const CarbonGrove: React.FC = () => {
           </Text>
         </View>
       </View>
-
-      <View className="flex-row justify-between mx-3">
-        <Image
-          source={require("../assets/images/watermascot.png")}
-          className="w-40 h-40"
-          resizeMode="contain"
-        />
+      <View className="flex-row justify-end mx-3">
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Image
             source={require("../assets/images/watermission.png")}
@@ -215,12 +210,37 @@ const CarbonGrove: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-1 justify-center items-center -mt-12">
-        <Image
-          source={require("../assets/images/plant.png")}
-          className="w-52 h-52"
-          resizeMode="contain"
-        />
+      <View className="h-[250px] w-full">
+        <View className="flex-1">
+          <WebView
+            source={{
+              uri: "https://my.spline.design/farm-0495a762ba12d9912145142e5f957465/",
+            }}
+            style={{ flex: 1, backgroundColor: "transparent" }}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            scrollEnabled={true}
+            bounces={false}
+            injectedJavaScript={`
+              // Remove watermark using shadow DOM
+              window.onload = function() {
+                setTimeout(() => {
+                  const viewer = document.querySelector('spline-viewer');
+                  if (viewer) {
+                    const shadowRoot = viewer.shadowRoot;
+                    if (shadowRoot) {
+                      const logo = shadowRoot.querySelector('#logo');
+                      if (logo) {
+                        logo.remove();
+                      }
+                    }
+                  }
+                }, 1000);  // Small delay to ensure elements are loaded
+              }
+              true;  // Required for injectedJavaScript
+            `}
+          />
+        </View>
       </View>
 
       <View className="mt-5 items-center">
@@ -249,10 +269,12 @@ const CarbonGrove: React.FC = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={{
-          flex: 1,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
           <SafeAreaView style={{ flex: 1 }}>
             <StatusBar
               backgroundColor="rgba(0, 0, 0, 0.5)"

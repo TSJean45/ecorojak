@@ -16,17 +16,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import SectionHeader from "@/components/SectionHeader";
-
-// Add this type for location suggestions
-type LocationSuggestion = {
-  properties: {
-    name: string;
-    street?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-  };
-};
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_MAPS_API_KEY } from '../key';
 
 export default function RideShare() {
   const router = useRouter();
@@ -40,10 +31,6 @@ export default function RideShare() {
   const [seats, setSeats] = useState(1);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [dateTime, setDateTime] = useState(new Date());
-  const [fromSuggestions, setFromSuggestions] = useState<LocationSuggestion[]>([]);
-  const [toSuggestions, setToSuggestions] = useState<LocationSuggestion[]>([]);
-  const [showFromSuggestions, setShowFromSuggestions] = useState(false);
-  const [showToSuggestions, setShowToSuggestions] = useState(false);
 
   const onDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
@@ -66,44 +53,6 @@ export default function RideShare() {
       newDateTime.setMinutes(selectedTime.getMinutes());
       setDateTime(newDateTime);
     }
-  };
-
-  const searchLocations = async (query: string, isFrom: boolean) => {
-    if (query.length < 3) {
-      isFrom ? setFromSuggestions([]) : setToSuggestions([]);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`
-      );
-      const data = await response.json();
-      const suggestions = data.features.map((feature: any) => ({
-        properties: feature.properties
-      }));
-      
-      if (isFrom) {
-        setFromSuggestions(suggestions);
-        setShowFromSuggestions(true);
-      } else {
-        setToSuggestions(suggestions);
-        setShowToSuggestions(true);
-      }
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-    }
-  };
-
-  const formatAddress = (properties: any) => {
-    const parts = [
-      properties.name,
-      properties.street,
-      properties.city,
-      properties.state,
-      properties.country
-    ].filter(Boolean);
-    return parts.join(', ');
   };
 
   // Add this mock data after your state declarations
@@ -215,76 +164,96 @@ export default function RideShare() {
                 elevation: 5, // for Android
               }}
             >
-              <View className="relative">
-                <View className="flex-row items-center mb-2">
-                  <MaterialCommunityIcons
-                    name="map-marker"
-                    size={24}
-                    color="#FF3B30"
-                  />
-                  <TextInput
-                    placeholder="From where?"
-                    value={fromLocation}
-                    onChangeText={(text) => {
-                      setFromLocation(text);
-                      searchLocations(text, true);
-                    }}
-                    className="flex-1 ml-2 border-b border-gray-200 py-2"
-                  />
-                </View>
-                
-                {showFromSuggestions && fromSuggestions.length > 0 && (
-                  <View className="absolute top-full left-0 right-0 bg-white rounded-lg shadow-lg z-50">
-                    {fromSuggestions.map((suggestion, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        className="p-3 border-b border-gray-100"
-                        onPress={() => {
-                          setFromLocation(formatAddress(suggestion.properties));
-                          setShowFromSuggestions(false);
-                        }}
-                      >
-                        <Text>{formatAddress(suggestion.properties)}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
+              <View className="relative mb-2">
+                <GooglePlacesAutocomplete
+                  placeholder="From where?"
+                  onPress={(data, details = null) => {
+                    setFromLocation(data.description);
+                  }}
+                  query={{
+                    key: GOOGLE_MAPS_API_KEY,
+                    language: 'en',
+                  }}
+                  styles={{
+                    container: {
+                      flex: 0,
+                    },
+                    textInput: {
+                      height: 40,
+                      marginLeft: 35, // Space for the icon
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#e2e2e2',
+                    },
+                    listView: {
+                      position: 'absolute',
+                      top: 45,
+                      left: 0,
+                      right: 0,
+                      backgroundColor: 'white',
+                      borderRadius: 5,
+                      zIndex: 1000,
+                      elevation: 3,
+                    },
+                  }}
+                  enablePoweredByContainer={false}
+                />
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={24}
+                  color="#FF3B30"
+                  style={{
+                    position: 'absolute',
+                    top: 8,
+                    left: 0,
+                    zIndex: 1,
+                  }}
+                />
               </View>
 
-              <View className="relative">
-                <View className="flex-row items-center mb-2">
-                  <MaterialCommunityIcons
-                    name="map-marker"
-                    size={24}
-                    color="#34C759"
-                  />
-                  <TextInput
-                    placeholder="Where to?"
-                    value={toLocation}
-                    onChangeText={(text) => {
-                      setToLocation(text);
-                      searchLocations(text, false);
-                    }}
-                    className="flex-1 ml-2 border-b border-gray-200 py-2"
-                  />
-                </View>
-
-                {showToSuggestions && toSuggestions.length > 0 && (
-                  <View className="absolute top-full left-0 right-0 bg-white rounded-lg shadow-lg z-50">
-                    {toSuggestions.map((suggestion, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        className="p-3 border-b border-gray-100"
-                        onPress={() => {
-                          setToLocation(formatAddress(suggestion.properties));
-                          setShowToSuggestions(false);
-                        }}
-                      >
-                        <Text>{formatAddress(suggestion.properties)}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
+              <View className="relative mb-2">
+                <GooglePlacesAutocomplete
+                  placeholder="Where to?"
+                  onPress={(data, details = null) => {
+                    setToLocation(data.description);
+                  }}
+                  query={{
+                    key: GOOGLE_MAPS_API_KEY,
+                    language: 'en',
+                  }}
+                  styles={{
+                    container: {
+                      flex: 0,
+                    },
+                    textInput: {
+                      height: 40,
+                      marginLeft: 35, // Space for the icon
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#e2e2e2',
+                    },
+                    listView: {
+                      position: 'absolute',
+                      top: 45,
+                      left: 0,
+                      right: 0,
+                      backgroundColor: 'white',
+                      borderRadius: 5,
+                      zIndex: 1000,
+                      elevation: 3,
+                    },
+                  }}
+                  enablePoweredByContainer={false}
+                />
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={24}
+                  color="#34C759"
+                  style={{
+                    position: 'absolute',
+                    top: 8,
+                    left: 0,
+                    zIndex: 1,
+                  }}
+                />
               </View>
 
               <View className="flex-row justify-between mb-2">

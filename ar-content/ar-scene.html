@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      html, body { 
+        margin: 0 !important; 
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+      }
+      .a-enter-vr { 
+        display: none; 
+      }
+      .arjs-video {
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+        object-fit: cover !important;
+      }
+      #debug {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-family: monospace;
+        font-size: 14px;
+        z-index: 9999;
+        text-align: center;
+        max-width: 80%;
+      }
+    </style>
+    <script>
+      AFRAME.registerComponent('clickhandler', {
+        init: function() {
+          this.el.addEventListener('click', () => {
+            console.log('clicked');
+            document.getElementById('debug').innerHTML = 'Marker clicked!';
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="debug">Checking location...</div>
+
+    <a-scene
+      embedded
+      vr-mode-ui="enabled: false"
+      arjs='sourceType: webcam; debugUIEnabled: false;'
+    >
+      <a-camera gps-camera rotation-reader></a-camera>
+
+      <!-- Marker at your exact location -->
+      <a-box
+        gps-entity-place="latitude: 3.187844; longitude: 101.648249"
+        material="color: red"
+        scale="20 20 20"
+        position="0 20 0"
+        animation="property: rotation; to: 0 360 0; dur: 3000; loop: true"
+      ></a-box>
+
+      <!-- Marker 10m North -->
+      <a-box
+        gps-entity-place="latitude: 3.187944; longitude: 101.648249"
+        material="color: yellow"
+        scale="20 20 20"
+        position="0 20 0"
+        animation="property: rotation; to: 0 360 0; dur: 3000; loop: true"
+      ></a-box>
+
+      <!-- Marker 10m South -->
+      <a-box
+        gps-entity-place="latitude: 3.187744; longitude: 101.648249"
+        material="color: blue"
+        scale="20 20 20"
+        position="0 20 0"
+        animation="property: rotation; to: 0 360 0; dur: 3000; loop: true"
+      ></a-box>
+
+      <!-- Marker 10m East -->
+      <a-box
+        gps-entity-place="latitude: 3.187844; longitude: 101.648349"
+        material="color: green"
+        scale="20 20 20"
+        position="0 20 0"
+        animation="property: rotation; to: 0 360 0; dur: 3000; loop: true"
+      ></a-box>
+    </a-scene>
+
+    <script>
+      window.addEventListener('load', () => {
+        // Keep video fullscreen
+        const video = document.querySelector('.arjs-video');
+        if (video) {
+          video.style.width = '100%';
+          video.style.height = '100%';
+          video.style.position = 'absolute';
+          video.style.top = '0';
+          video.style.left = '0';
+          video.style.objectFit = 'cover';
+          video.style.transform = 'none';
+        }
+
+        // Update debug info with directions
+        const debugDiv = document.getElementById('debug');
+        debugDiv.innerHTML = 'Look for markers:<br>' +
+                           'RED = Your location<br>' +
+                           'YELLOW = 10m North<br>' +
+                           'BLUE = 10m South<br>' +
+                           'GREEN = 10m East<br>' +
+                           'Look up about 20 degrees!';
+
+        // Log GPS updates
+        window.addEventListener('gps-camera-update-position', (e) => {
+          const {latitude, longitude} = e.detail.position;
+          debugDiv.innerHTML += `<br>Your position: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+        });
+      });
+    </script>
+  </body>
+</html> 

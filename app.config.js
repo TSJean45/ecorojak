@@ -67,7 +67,13 @@
              cameraPermission: "Allow $(PRODUCT_NAME) to access your camera",
              microphonePermission: "Allow $(PRODUCT_NAME) to access your microphone"
            }
-         ]
+         ],
+         [
+          "expo-sensors",
+          {
+            "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion"
+          }
+        ]
        ],
        experiments: {
          typedRoutes: true

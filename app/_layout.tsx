@@ -9,8 +9,8 @@ export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const pathname = usePathname();
 
-  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar'];
-  const excludedPathsForChat = ['/', '/greenie', '/verification', '/signup', '/login', '/avatar', '/home'];
+  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar', '/wastewizard/detection/camera', '/wastewizard/trashartify/camera', '/ecolens/mindarlens', '/splinetest'];
+  const excludedPathsForChat = ['/', '/greenie', '/verification', '/signup', '/login', '/avatar', '/home', '/splinetest'];
 
   useEffect(() => {
     async function loadFonts() {
@@ -49,8 +49,8 @@ export default function RootLayout() {
         <Stack.Screen name="verification" />
         <Stack.Screen name="avatar" />
         <Stack.Screen name="login" />
-        <Stack.Screen name="wastewizard/scanresults" />
-        <Stack.Screen name="wastewizard/resultdetails" />
+        <Stack.Screen name="wastewizard/trashartify/scanresults" />
+        <Stack.Screen name="wastewizard/trashartify/resultdetails" />
         <Stack.Screen name="wastewizard/trashartify" />
         <Stack.Screen name="wastewizard/trashscanify" />
         <Stack.Screen name="wastewizard/book" />

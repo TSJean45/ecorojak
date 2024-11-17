@@ -1,0 +1,33 @@
+{
+  "scans": [
+    {
+      "id": "1",
+      "imageUri": "https://example.com/placeholder.jpg",
+      "timestamp": "2024-03-20T10:30:00Z",
+      "items": [
+        {
+          "category": "PLASTIC",
+          "label": "Water Bottle",
+          "isRecyclable": true
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "imageUri": "https://example.com/placeholder2.jpg",
+      "timestamp": "2024-03-19T15:45:00Z",
+      "items": [
+        {
+          "category": "CARDBOARD",
+          "label": "Box",
+          "isRecyclable": true
+        },
+        {
+          "category": "NON_RECYCLABLE",
+          "label": "Styrofoam",
+          "isRecyclable": false
+        }
+      ]
+    }
+  ]
+} 

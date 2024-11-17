@@ -1,0 +1,182 @@
+{
+  "PLASTIC": {
+    "title": "Plastic",
+    "description": "Recyclable plastic items",
+    "steps": [
+      {
+        "description": "Empty and rinse all plastic containers thoroughly to remove any food or liquid residue",
+        "icon": "water-outline"
+      },
+      {
+        "description": "Remove and separate all caps, lids, and plastic films",
+        "icon": "remove-circle-outline"
+      },
+      {
+        "description": "Check the recycling number (1-7) on the bottom of the container",
+        "icon": "search-outline"
+      },
+      {
+        "description": "Flatten containers when possible to save space in your recycling bin",
+        "icon": "resize-outline"
+      }
+    ],
+    "commonItems": [
+      "Water bottles",
+      "Food containers",
+      "Plastic bags",
+      "Beverage bottles"
+    ],
+    "icon": "water-outline",
+    "color": "#FF6B6B"
+  },
+  "PAPER": {
+    "title": "Paper",
+    "description": "Clean paper products",
+    "steps": [
+      {
+        "description": "Ensure all paper materials are clean and free from food contamination",
+        "icon": "checkmark-circle-outline"
+      },
+      {
+        "description": "Remove any plastic wrapping, tape, or non-paper materials",
+        "icon": "remove-circle-outline"
+      },
+      {
+        "description": "Sort different types of paper (newspapers, magazines, office paper) into separate piles",
+        "icon": "filter-outline"
+      },
+      {
+        "description": "Keep paper dry and protected from moisture to maintain recyclability",
+        "icon": "umbrella-outline"
+      }
+    ],
+    "commonItems": [
+      "Newspapers",
+      "Magazines",
+      "Printer paper",
+      "Envelopes"
+    ],
+    "icon": "newspaper-outline",
+    "color": "#4ECDC4"
+  },
+  "CARDBOARD": {
+    "title": "Cardboard",
+    "description": "Corrugated cardboard and boxes",
+    "steps": [
+      {
+        "description": "Remove all packaging materials including tape, staples, and plastic inserts",
+        "icon": "remove-circle-outline"
+      },
+      {
+        "description": "Break down all boxes completely flat to save space",
+        "icon": "resize-outline"
+      },
+      {
+        "description": "Check for and remove any oil, grease, or food contamination",
+        "icon": "search-outline"
+      },
+      {
+        "description": "Keep cardboard dry and protected from weather",
+        "icon": "umbrella-outline"
+      }
+    ],
+    "commonItems": [
+      "Shipping boxes",
+      "Food packaging",
+      "Shoe boxes",
+      "Moving boxes"
+    ],
+    "icon": "cube-outline",
+    "color": "#FFB347"
+  },
+  "METAL": {
+    "title": "Metal",
+    "description": "Metal cans and containers",
+    "steps": [
+      {
+        "description": "Empty and thoroughly rinse all metal containers to remove food residue",
+        "icon": "water-outline"
+      },
+      {
+        "description": "Remove paper labels where possible (adhesive residue is okay)",
+        "icon": "remove-circle-outline"
+      },
+      {
+        "description": "Crush cans and containers to save space, if required by your local facility",
+        "icon": "resize-outline"
+      },
+      {
+        "description": "Separate different types of metals (aluminum, steel, tin) if required",
+        "icon": "filter-outline"
+      }
+    ],
+    "commonItems": [
+      "Aluminum cans",
+      "Tin cans",
+      "Metal containers",
+      "Foil products"
+    ],
+    "icon": "hardware-chip-outline",
+    "color": "#95A5A6"
+  },
+  "GLASS": {
+    "title": "Glass",
+    "description": "Glass bottles and jars",
+    "steps": [
+      {
+        "description": "Empty and thoroughly rinse all glass containers to remove any contents",
+        "icon": "water-outline"
+      },
+      {
+        "description": "Remove all caps, lids, and metal/plastic rings from containers",
+        "icon": "remove-circle-outline"
+      },
+      {
+        "description": "Sort glass by color (clear, green, brown) if required by your facility",
+        "icon": "filter-outline"
+      },
+      {
+        "description": "Handle with care - do not break glass intentionally",
+        "icon": "warning-outline"
+      }
+    ],
+    "commonItems": [
+      "Glass bottles",
+      "Food jars",
+      "Beverage containers",
+      "Glass packaging"
+    ],
+    "icon": "wine-outline",
+    "color": "#45B7D1"
+  },
+  "NON_RECYCLABLE": {
+    "title": "Non-Recyclable",
+    "description": "This item cannot be recycled",
+    "steps": [
+      {
+        "description": "This item should be disposed of in regular trash",
+        "icon": "trash-outline"
+      },
+      {
+        "description": "Consider finding reusable alternatives to reduce waste",
+        "icon": "refresh-outline"
+      },
+      {
+        "description": "Check local waste management guidelines for proper disposal",
+        "icon": "information-circle-outline"
+      },
+      {
+        "description": "If item contains hazardous materials, take to special waste collection sites",
+        "icon": "warning-outline"
+      }
+    ],
+    "commonItems": [
+      "Styrofoam",
+      "Certain plastics",
+      "Mixed materials",
+      "Contaminated items"
+    ],
+    "icon": "close-circle-outline",
+    "color": "#FF4444"
+  }
+} 
