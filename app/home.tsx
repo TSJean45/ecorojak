@@ -291,18 +291,18 @@ export default function Home() {
           {/* Second Row */}
           <View className="flex-row justify-between">
             <TouchableOpacity
-              onPress={() => router.push("/splinetest")}
+              onPress={() => router.push("/greenmart/list")}
               className="items-center w-[25%]"
             >
               <Image
-                source={require("../assets/images/carbontraveller-home.png")}
+                source={require("../assets/images/greenmart-home.png")}
                 className="w-16 h-16"
               />
-              <Text className="text-xs font-bold mt-1 text-center">Spline</Text>
+              <Text className="text-xs font-bold mt-1 text-center">GreenMart</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => router.push("/newfeature1")}
+              onPress={() => router.push("/greenmart/list")}
               className="items-center w-[25%]"
             >
               <Image

@@ -154,7 +154,7 @@ export default function Greenie() {
         className="h-[92%] flex-1 justify-center"
       >
         <Header
-          title="Chat"
+          title="Greenie"
           rightButton={{
             icon: "time-outline",
             onPress: () => console.log("History button pressed"),
