@@ -278,14 +278,14 @@ export default function Home() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => router.push("/newfeature2")}
+              onPress={() => router.push("/transittogether")}
               className="items-center w-[25%]"
             >
               <Image
                 source={require("../assets/images/carbontraveller-home.png")}
                 className="w-16 h-16"
               />
-              <Text className="text-xs font-bold mt-1 text-center">New Feature 2</Text>
+              <Text className="text-xs font-bold mt-1 text-center">TransitTogether</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
