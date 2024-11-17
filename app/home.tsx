@@ -61,41 +61,6 @@ export default function Home() {
     },
   ];
 
-  const impactCards = [
-    {
-      id: "1",
-      icon: "leaf-outline",
-      title: "Plant a Tree",
-      description: "Join our community tree planting initiative",
-      bgColor: "#E8F5E9", // light green
-      iconColor: "#2E7D32", // dark green
-    },
-    {
-      id: "2",
-      icon: "water-outline",
-      title: "Save Water",
-      description: "Small changes to save precious water",
-      bgColor: "#E3F2FD", // light blue
-      iconColor: "#1565C0", // dark blue
-    },
-    {
-      id: "3",
-      icon: "bicycle-outline",
-      title: "Green Transport",
-      description: "Choose eco-friendly ways to travel",
-      bgColor: "#FFF3E0", // light orange
-      iconColor: "#E65100", // dark orange
-    },
-    {
-      id: "4",
-      icon: "battery-charging-outline",
-      title: "Save Energy",
-      description: "Tips to reduce your energy consumption",
-      bgColor: "#F3E5F5", // light purple
-      iconColor: "#6A1B9A", // dark purple
-    },
-  ];
-
   return (
     <SafeAreaView className="flex-1 bg-[#F9F9F9]">
       <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}>
@@ -302,14 +267,14 @@ export default function Home() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => router.push("/greenmart/list")}
+              onPress={() => router.push("/citypulse")}
               className="items-center w-[25%]"
             >
               <Image
-                source={require("../assets/images/carbontraveller-home.png")}
+                source={require("../assets/images/citypulse-home.png")}
                 className="w-16 h-16"
               />
-              <Text className="text-xs font-bold mt-1 text-center">New Feature 1</Text>
+              <Text className="text-xs font-bold mt-1 text-center">CityPulse</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -386,26 +351,19 @@ export default function Home() {
 
         {/* Impact Section */}
         <View className="p-4">
-          <Text className="text-lg font-bold mb-3">
+          <Text className="text-lg font-bold">
             Small Steps, Big Impact
           </Text>
-          <View className="flex-row flex-wrap justify-between">
-            {impactCards.map((card) => (
-              <View
-                key={card.id}
-                className="flex-row items-center p-3 rounded-xl w-[48.5%] mb-2"
-                style={{ backgroundColor: card.bgColor }}
-              >
-                <Ionicons name={card.icon} size={24} color={card.iconColor} />
-                <View className="ml-2 flex-1">
-                  <Text className="font-bold">{card.title}</Text>
-                  <Text className="text-xs text-gray-500">
-                    {card.description}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </View>
+          <TouchableOpacity 
+            onPress={() => router.push("/impact")}
+            className="w-full rounded-xl overflow-hidden"
+          >
+            <Image
+              source={require("../assets/images/quiz-button.png")}
+              className="w-full h-40"
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
