@@ -322,9 +322,9 @@ export default function LocationScreen() {
     // End point
     const destination = `${waypoints[waypoints.length-1].latitude},${waypoints[waypoints.length-1].longitude}`;
     
-    // Take every 5th point instead of every 10th point
+    // Take every 3rd point instead of every 5th point
     const middlePoints = waypoints
-      .filter((_, index) => index % 5 === 0) // Changed from 10 to 5
+      .filter((_, index) => index % 5 === 0) // Changed from 5 to 3
       .slice(1, -1) // Remove start and end points
       .map(wp => `${wp.latitude},${wp.longitude}`)
       .join('|');
@@ -511,7 +511,7 @@ export default function LocationScreen() {
               horizontal
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  className="flex-row bg-white p-3 my-1 mx-1 w-60 rounded-lg items-center"
+                  className="flex-row bg-white p-3 my-1 py-3 mx-1 w-60 rounded-lg items-center"
                   style={{
                     shadowColor: "#000",
                     shadowOffset: { width: 1, height: 1 },

@@ -240,47 +240,100 @@ export default function Home() {
         </View>
 
         {/* Action Buttons */}
-        <View className="flex-row justify-between px-4 py-4">
-          <TouchableOpacity
-            onPress={() => router.push("/rideshare")}
-            className="items-center"
-          >
-            <Image
-              source={require("../assets/images/rideshare-home.png")}
-              className="w-16 h-16"
-            />
-            <Text className="text-xs font-bold mt-1">Rideshare</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push("/ecolens")}
-            className="items-center"
-          >
-            <Image
-              source={require("../assets/images/ecolens-home.png")}
-              className="w-16 h-16"
-            />
-            <Text className="text-xs font-bold mt-1">EcoLens</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push("/wastewizard")}
-            className="items-center"
-          >
-            <Image
-              source={require("../assets/images/wastewizard-home.png")}
-              className="w-16 h-16"
-            />
-            <Text className="text-xs font-bold mt-1">WasteWizard</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push("/carbontraveller")}
-            className="items-center"
-          >
-            <Image
-              source={require("../assets/images/carbontraveller-home.png")}
-              className="w-16 h-16"
-            />
-            <Text className="text-xs font-bold mt-1">CarbonTraveller</Text>
-          </TouchableOpacity>
+        <View className="px-4 py-4">
+          {/* First Row */}
+          <View className="flex-row justify-between mb-4">
+            <TouchableOpacity
+              onPress={() => router.push("/rideshare")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/rideshare-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">RideShare</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => router.push("/ecolens")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/ecolens-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">EcoLens</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => router.push("/wastewizard")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/wastewizard-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">WasteWizard</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => router.push("/carbontraveller")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/carbontraveller-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center leading-none">CarbonTraveller</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Second Row */}
+          <View className="flex-row justify-between">
+            <TouchableOpacity
+              onPress={() => router.push("/splinetest")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/carbontraveller-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">Spline</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push("/newfeature1")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/carbontraveller-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">New Feature 1</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push("/newfeature2")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/carbontraveller-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">New Feature 2</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push("/newfeature3")}
+              className="items-center w-[25%]"
+            >
+              <Image
+                source={require("../assets/images/carbontraveller-home.png")}
+                className="w-16 h-16"
+              />
+              <Text className="text-xs font-bold mt-1 text-center">New Feature 3</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Events Section */}
