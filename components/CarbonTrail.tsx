@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, Dimensions, TouchableOpacity, FlatList } from 'react-native';
+import { useState } from 'react';
+import { View, Text, Image, Dimensions, TouchableOpacity, FlatList, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SectionHeader from './SectionHeader';
 
@@ -33,7 +34,18 @@ const CarbonTrail: React.FC = () => {
     { key: '2', icon: 'car-outline', title: 'Electric Cars', description: 'Produce 50% less emissions than gas cars', color: '#F8F6F8' },
     { key: '3', icon: 'water-outline', title: 'Save Water', description: 'Saves energy used in water treatment', color: '#ECFCFC' },
     { key: '4', icon: 'bulb-outline', title: 'LED Lights', description: 'Use 75% less energy than incandescent', color: '#F8F3E7' },
+    { key: '5', icon: 'sunny-outline', title: 'Solar Power', description: 'Can reduce carbon footprint by 80%', color: '#FFF8E7' },
+    { key: '6', icon: 'bicycle-outline', title: 'Cycling', description: 'Zero emissions and great exercise', color: '#F0F8FF' },
+    { key: '7', icon: 'trash-outline', title: 'Recycling', description: 'Reduces landfill emissions by 30%', color: '#F5FFE5' },
+    { key: '8', icon: 'home-outline', title: 'Home Insulation', description: 'Can reduce energy use by 40%', color: '#FFF0F5' },
   ];
+
+  const [currentItems, setCurrentItems] = useState(didYouKnowItems.slice(0, 4));
+
+  const refreshItems = () => {
+    const shuffled = [...didYouKnowItems].sort(() => 0.5 - Math.random());
+    setCurrentItems(shuffled.slice(0, 4));
+  };
 
   const renderDidYouKnowItem = (item) => (
     <View key={item.key} className="w-1/2 p-2">
@@ -97,18 +109,26 @@ const CarbonTrail: React.FC = () => {
         {activities.map((item) => renderActivity({ item }))}
       </View>
 
-      <View className="items-end px-4 py-1">
+      <View className="items-center px-4 py-1">
         <TouchableOpacity className="flex-row items-center">
-          <Text className="text-black text-xs font-bold mr-1">Show More</Text>
+          <Text className="text-black text-xs font-bold">Show More</Text>
           <Ionicons name="chevron-down" size={16} color="black" />
         </TouchableOpacity>
       </View>
 
-      
-    <SectionHeader title="Did you know that...?" />
-    <View className="flex-row flex-wrap px-2">
-      {didYouKnowItems.map((item) => renderDidYouKnowItem(item))}
-    </View>
+    <View className="flex-row justify-between items-center px-4">
+        <Text className="font-bold text-lg">Did you know that...?</Text>
+        <TouchableOpacity 
+          className="bg-[#1f8b65] px-4 py-2 rounded-lg"
+          onPress={refreshItems}
+        >
+          <Text className="text-white font-bold">Refresh</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="flex-row flex-wrap px-2">
+        {currentItems.map((item) => renderDidYouKnowItem(item))}
+      </View>
     </View>
   );
 };
