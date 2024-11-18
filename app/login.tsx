@@ -1,9 +1,26 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity, StatusBar, Image } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar, Image } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAuth } from './context/AuthContext';
 
 export default function Login() {
+  const { signIn } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      const success = await signIn();
+      if (success) {
+        console.log('Connection and login successful');
+        router.push('/verification');
+      } else {
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
   return (
     <LinearGradient colors={["#ACF2EC", "#F8FFFF"]} className="flex-1">
       <StatusBar
@@ -29,7 +46,7 @@ export default function Login() {
 
         <TouchableOpacity
           className="bg-green p-3 rounded-2xl w-full"
-          onPress={() => router.push("/verification")}
+          onPress={handleLogin}
         >
           <Text className="text-white text-center font-bold">Login</Text>
         </TouchableOpacity>
