@@ -109,7 +109,7 @@ const CarbonTrail: React.FC = () => {
         {activities.map((item) => renderActivity({ item }))}
       </View>
 
-      <View className="items-center px-4 py-1">
+      <View className="items-center py-1">
         <TouchableOpacity className="flex-row items-center">
           <Text className="text-black text-xs font-bold">Show More</Text>
           <Ionicons name="chevron-down" size={16} color="black" />
@@ -122,7 +122,7 @@ const CarbonTrail: React.FC = () => {
           className="bg-[#1f8b65] px-4 py-2 rounded-lg"
           onPress={refreshItems}
         >
-          <Text className="text-white font-bold">Refresh</Text>
+          <Text className="text-white font-bold px-2">Tap Me!</Text>
         </TouchableOpacity>
       </View>
 
