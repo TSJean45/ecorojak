@@ -50,7 +50,7 @@ export default function WasteWizard() {
           </Text>
         </View>
 
-        <View className="w-full mx-2 mt-[-32]">
+        <View className="w-full mx-2 mt-[-32] px-4">
           <Image
             source={require("../assets/images/wastewizard-stat.png")}
             style={{ width: width, height: 190 }}
@@ -83,7 +83,7 @@ export default function WasteWizard() {
             <Image
               source={require("../assets/images/wastewizard-flow.png")}
               style={{ width: "100%", height: 75 }}
-              resizeMode="cover"
+              resizeMode="contain"
               className="rounded-lg mb-2"
             />
             <TouchableOpacity
@@ -97,8 +97,8 @@ export default function WasteWizard() {
           </View>
 
           {/* Other Magic Section */}
-          <View className="px-4">
-            <Text className="font-bold text-lg mb-4">Other Magic</Text>
+          <View className="px-4 pt-2">
+            <Text className="font-bold text-lg mb-2">Other Magic</Text>
             <View className="flex-row justify-between">
               <TouchableOpacity 
                 className="bg-white rounded-2xl w-[48%] overflow-hidden"
