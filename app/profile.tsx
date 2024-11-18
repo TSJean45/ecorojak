@@ -101,7 +101,7 @@ export default function Profile() {
             </View>
             <Image
               source={require("../assets/images/medal.png")}
-              className="w-34 h-36 mt-2"
+              className="w-30 h-32 mt-2"
             />
           </View>
           <TouchableOpacity
@@ -137,10 +137,10 @@ export default function Profile() {
         </Text>
       </View>
 
-      <View className="flex-row justify-between items-center bg-[#E8FFFD] rounded-lg shadow mt-4 mx-4 p-4">
+      <View className="flex-row justify-between items-center bg-[#E8FFFD] rounded-lg shadow mt-3 mx-4 p-3">
         <Image
           source={require("../assets/images/referral.png")} // Replace with your referral image path
-          className="w-16 h-16 mr-4"
+          className="w-14 h-14 mr-4"
         />
         <View className="flex-1">
           <Text className="text-lg font-bold text-green  ">Referral</Text>
@@ -155,8 +155,8 @@ export default function Profile() {
         </TouchableOpacity>
       </View>
 
-      <View>
-        <Text className="text-lg px-4 font-bold text-black mb-3">General</Text>
+      <View className="mt-4">
+        <Text className="text-lg px-4 font-bold text-black mb-2">General</Text>
         <TouchableOpacity className="flex-row justify-between items-center mb-5 px-5">
           <View className="flex-row items-center">
             <Ionicons name="person-circle-outline" size={24} color="gray" />
