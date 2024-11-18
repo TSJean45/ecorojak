@@ -17,7 +17,7 @@ export default function CityPulse() {
         className="absolute w-full h-full"
       />
       <Header
-        title="City Pulse"
+        title="CityPulse"
         leftButton={{
           icon: "arrow-back",
           onPress: () => router.back(),

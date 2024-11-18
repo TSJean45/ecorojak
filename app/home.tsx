@@ -212,18 +212,6 @@ export default function Home() {
           className="flex-row py-6"
         >
           <TouchableOpacity
-            onPress={() => router.push("/gamestart")}
-            className="items-center mr-3"
-          >
-            <Image
-              source={require("../assets/images/carbontraveller-home.png")}
-              className="w-16 h-16"
-            />
-            <Text className="text-xs font-bold mt-1 text-center">
-              EcoRoll
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             onPress={() => router.push("/rideshare")}
             className="items-center mr-3"
           >
@@ -254,6 +242,16 @@ export default function Home() {
             <Text className="text-xs font-bold mt-1">WasteWizard</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => router.push("/gamestart")}
+            className="items-center mr-3"
+          >
+            <Image
+              source={require("../assets/images/ecoroll-home.png")}
+              className="w-16 h-16"
+            />
+            <Text className="text-xs font-bold mt-1 text-center">EcoRoll</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => router.push("/carbontraveller")}
             className="items-center mr-3"
           >
@@ -274,7 +272,7 @@ export default function Home() {
             <Text className="text-xs font-bold mt-1">TransitTogether</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => router.push("/greenmart")}
+            onPress={() => router.push("/greenmart/list")}
             className="items-center mr-3"
           >
             <Image

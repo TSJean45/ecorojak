@@ -186,7 +186,7 @@ export default function TrashArtify() {
         </View>
 
         {/* Weekly Challenge Section */}
-        <Text className="text-lg font-bold">This Week's Challenge</Text>
+        <Text className="text-lg font-bold mt-4">This Week's Challenge</Text>
         <View className="flex-row justify-between">
           {/* Challenge Card 1 */}
           <View className="w-[48%] p-1">

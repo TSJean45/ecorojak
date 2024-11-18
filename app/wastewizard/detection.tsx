@@ -221,8 +221,11 @@ export default function Detection() {
       <ScrollView className="flex-1 px-4">
         {/* Scanner Container */}
         <View className="bg-[#F4F4F4] rounded-2xl p-3">
+          <Text className="text-xl font-bold text-center">
+            Scan Your Trash and
+          </Text>
           <Text className="text-xl font-bold mb-2 text-center">
-            Scan Your Trash and Learn How to Recycle!
+            Learn How to Recycle!
           </Text>
           <View className="flex-col items-center gap-1">
             <TouchableOpacity 
