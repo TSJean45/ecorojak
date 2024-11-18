@@ -18,11 +18,11 @@ import { Camera } from "expo-camera";
 import { GOOGLE_VISION_API_KEY } from "@/key";
 
 const WASTE_CATEGORIES = {
-  PLASTIC: ['bottle', 'container', 'plastic', 'cup', 'drink'],
-  PAPER: ['paper', 'newspaper', 'book', 'magazine'],
-  CARDBOARD: ['box', 'cardboard', 'carton'],
-  METAL: ['can', 'tin', 'aluminum'],
-  GLASS: ['glass', 'jar']
+  PLASTIC: ["bottle", "container", "plastic", "cup", "drink"],
+  PAPER: ["paper", "newspaper", "book", "magazine"],
+  CARDBOARD: ["box", "cardboard", "carton"],
+  METAL: ["can", "tin", "aluminum"],
+  GLASS: ["glass", "jar"],
 };
 
 export default function TrashArtify() {
@@ -32,46 +32,48 @@ export default function TrashArtify() {
   const detectObjects = async (base64Image) => {
     try {
       const apiUrl = `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_VISION_API_KEY}`;
-      
+
       const requestBody = {
         requests: [
           {
             image: {
-              content: base64Image
+              content: base64Image,
             },
             features: [
               {
                 type: "OBJECT_LOCALIZATION",
-                maxResults: 5
-              }
-            ]
-          }
-        ]
+                maxResults: 5,
+              },
+            ],
+          },
+        ],
       };
 
       const response = await fetch(apiUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
-      
+
       if (data.responses && data.responses[0].localizedObjectAnnotations) {
-        const objects = data.responses[0].localizedObjectAnnotations.map(obj => ({
-          label: obj.name,
-          confidence: obj.score,
-          category: getWasteCategory(obj.name),
-          vertices: obj.boundingPoly.normalizedVertices,
-        }));
+        const objects = data.responses[0].localizedObjectAnnotations.map(
+          (obj) => ({
+            label: obj.name,
+            confidence: obj.score,
+            category: getWasteCategory(obj.name),
+            vertices: obj.boundingPoly.normalizedVertices,
+          })
+        );
 
         return objects;
       }
       return [];
     } catch (error) {
-      console.error('Object detection error:', error);
+      console.error("Object detection error:", error);
       return [];
     }
   };
@@ -79,7 +81,7 @@ export default function TrashArtify() {
   const getWasteCategory = (name) => {
     const lowerName = name.toLowerCase();
     for (const [category, keywords] of Object.entries(WASTE_CATEGORIES)) {
-      if (keywords.some(keyword => lowerName.includes(keyword))) {
+      if (keywords.some((keyword) => lowerName.includes(keyword))) {
         return category;
       }
     }
@@ -88,9 +90,10 @@ export default function TrashArtify() {
 
   const pickImage = async () => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
         return;
       }
 
@@ -104,31 +107,31 @@ export default function TrashArtify() {
       if (!result.canceled) {
         // Show loading state if needed
         const detectedObjects = await detectObjects(result.assets[0].base64);
-        
+
         if (detectedObjects.length > 0) {
           router.push({
             pathname: "/wastewizard/trashartify/scanresults",
             params: {
               imageBase64: result.assets[0].base64,
-              detectedObjects: JSON.stringify(detectedObjects)
-            }
+              detectedObjects: JSON.stringify(detectedObjects),
+            },
           });
         } else {
-          alert('No recyclable items detected. Please try another image.');
+          alert("No recyclable items detected. Please try another image.");
         }
       }
     } catch (error) {
-      console.error('Image picker error:', error);
-      alert('Error selecting image. Please try again.');
+      console.error("Image picker error:", error);
+      alert("Error selecting image. Please try again.");
     }
   };
 
   const startCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       router.push("/wastewizard/trashartify/camera");
     } else {
-      alert('Camera permission is required to use this feature');
+      alert("Camera permission is required to use this feature");
     }
   };
 
@@ -157,30 +160,27 @@ export default function TrashArtify() {
             Generate Your Own Art Ideas Through Trash!
           </Text>
           <View className="flex-col items-center gap-1">
-            <TouchableOpacity 
-              className="w-[80%] bg-[#E3F2F1] rounded-xl p-4 mb-2" 
+            <TouchableOpacity
+              className="w-[80%]"
               onPress={pickImage}
             >
-              <View className="items-center">
-                <Ionicons name="images-outline" size={40} color="#2E7D32" />
-                <Text className="text-center mt-2 font-semibold">
-                  Choose from Gallery
-                </Text>
-              </View>
+              <Image
+                source={require("@/assets/images/upload-image.png")}
+                className="w-full h-24 rounded-lg"
+                resizeMode="contain"
+                style={{ backgroundColor: "#F4F4F4" }}
+              />
             </TouchableOpacity>
 
             <Text className="text-sm text-gray">-or-</Text>
 
-            <TouchableOpacity 
-              className="w-[80%] bg-[#E3F2F1] rounded-xl p-4 mt-2" 
-              onPress={startCamera}
-            >
-              <View className="items-center">
-                <Ionicons name="camera-outline" size={40} color="#2E7D32" />
-                <Text className="text-center mt-2 font-semibold">
-                  Take a Photo
-                </Text>
-              </View>
+            <TouchableOpacity className="w-[80%]" onPress={startCamera}>
+              <Image
+                source={require("@/assets/images/turn-on-camera.png")}
+                className="w-full h-24 rounded-lg"
+                resizeMode="contain"
+                style={{ backgroundColor: "#F4F4F4" }}
+              />
             </TouchableOpacity>
           </View>
         </View>

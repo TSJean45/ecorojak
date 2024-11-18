@@ -7,7 +7,6 @@ import { Stack, router } from 'expo-router';
 import Header from "@/components/Header";
 import { GOOGLE_VISION_API_KEY } from "@/key";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import mockScans from '@/data/recentScans.json';
 
 const ALLOWED_OBJECTS = {
   PLASTIC: ['Plastic bottle', 'Plastic container', 'Bottle', 'Container', 'Plastic'],
@@ -52,14 +51,14 @@ export default function Detection() {
     try {
       const savedScans = await AsyncStorage.getItem('recentScans');
       if (savedScans) {
-        setRecentScans(JSON.parse(savedScans));
+        const parsedScans = JSON.parse(savedScans);
+        setRecentScans(parsedScans || []);
       } else {
-        // Use mock data for first time
-        setRecentScans(mockScans.scans);
-        await AsyncStorage.setItem('recentScans', JSON.stringify(mockScans.scans));
+        setRecentScans([]);
       }
     } catch (error) {
       console.error('Error loading recent scans:', error);
+      setRecentScans([]);
     }
   };
 
@@ -205,10 +204,10 @@ export default function Detection() {
       className="flex-1 bg-[#F8FFFF]"
       style={{ paddingBottom: insets.bottom + 60 }}
     >
-      {/* Background Image Container */}
+      
       <View style={{ height: screenHeight * 0.25 }}>
         <ImageBackground
-          source={require("@/assets/images/trashscanify.png")}
+          source={require("@/assets/images/trashartify.png")}
           className="w-full h-full"
         />
       </View>
@@ -260,14 +259,14 @@ export default function Detection() {
         </View>
 
         {/* Recent Scans Section */}
-        <View className="mt-4 mb-6">
-          <Text className="text-lg font-bold mb-2">Recent Scans</Text>
+        <View className="mt-6 mb-6">
+          <Text className="text-xl font-bold mb-3">Recent Scans</Text>
           {recentScans.length > 0 ? (
-            <View className="space-y-3">
+            <View className="space-y-4">
               {recentScans.map((scan) => (
                 <TouchableOpacity
                   key={scan.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-sm"
+                  className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
                   onPress={() => router.push({
                     pathname: "/wastewizard/detection/results",
                     params: {
@@ -276,18 +275,18 @@ export default function Detection() {
                     }
                   })}
                 >
-                  <View className="flex-row h-24">
+                  <View className="flex-row h-28">
                     {/* Scan Image */}
                     <Image
                       source={{ uri: scan.imageUri }}
-                      className="w-24 h-full"
+                      className="w-28 h-full"
                       resizeMode="cover"
                     />
                     
                     {/* Scan Details */}
                     <View className="flex-1 p-3">
-                      <View className="flex-row justify-between items-start">
-                        <Text className="text-sm text-gray-500">
+                      <View className="flex-row justify-between items-start mb-2">
+                        <Text className="text-sm font-medium text-gray-600">
                           {formatTimeAgo(scan.timestamp)}
                         </Text>
                         <Text className="text-xs text-gray-400">
@@ -296,17 +295,21 @@ export default function Detection() {
                       </View>
                       
                       {/* Items Found */}
-                      <View className="flex-row flex-wrap mt-1">
+                      <View className="flex-row flex-wrap">
                         {scan.items.map((item, index) => (
                           <View
                             key={index}
-                            className={`rounded-full px-2 py-1 mr-1 mb-1 ${
-                              item.isRecyclable ? 'bg-green-100' : 'bg-red-100'
+                            className={`rounded-full px-3 py-1 mr-2 mb-1 ${
+                              item.isRecyclable 
+                                ? 'bg-green/10 border border-green' 
+                                : 'bg-red-50 border border-red-200'
                             }`}
                           >
-                            <Text className={`text-xs ${
-                              item.isRecyclable ? 'text-green-700' : 'text-red-700'
-                            }`}>
+                            <Text 
+                              className={`text-xs font-medium ${
+                                item.isRecyclable ? 'text-green' : 'text-red-500'
+                              }`}
+                            >
                               {item.label}
                             </Text>
                           </View>
@@ -318,9 +321,9 @@ export default function Detection() {
               ))}
             </View>
           ) : (
-            <View className="bg-white rounded-lg p-4">
-              <Text className="text-center text-gray-500">
-                Your recent scans will appear here
+            <View className="bg-gray-50 rounded-xl p-6 items-center">
+              <Text className="text-gray-500 text-center">
+                No recent scans yet.{'\n'}Start scanning items to see your history!
               </Text>
             </View>
           )}
