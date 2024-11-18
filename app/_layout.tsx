@@ -1,22 +1,41 @@
 import { Stack, usePathname } from "expo-router";
-import * as Font from 'expo-font';
-import { View, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import BottomNavigationBar from '../components/navigation/BottomNavigationBar';
-import ChatFAB from '../components/ChatFAB'; // Ensure the path is correct
+import * as Font from "expo-font";
+import { View, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import BottomNavigationBar from "../components/navigation/BottomNavigationBar";
+import ChatFAB from "../components/ChatFAB"; // Ensure the path is correct
 
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const pathname = usePathname();
 
-  const excludedPathsForNav = ['/', '/verification', '/signup', '/login', '/avatar', '/wastewizard/detection/camera', '/wastewizard/trashartify/camera', '/ecolens/mindarlens', '/splinetest'];
-  const excludedPathsForChat = ['/', '/greenie', '/verification', '/signup', '/login', '/avatar', '/home', '/splinetest'];
+  const excludedPathsForNav = [
+    "/",
+    "/verification",
+    "/signup",
+    "/login",
+    "/avatar",
+    "/wastewizard/detection/camera",
+    "/wastewizard/trashartify/camera",
+    "/ecolens/mindarlens",
+    "/splinetest",
+  ];
+  const excludedPathsForChat = [
+    "/",
+    "/greenie",
+    "/verification",
+    "/signup",
+    "/login",
+    "/avatar",
+    "/home",
+    "/splinetest",
+  ];
 
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        'Inter-Regular': require('../assets/fonts/Inter_28pt-Regular.ttf'),
-        'Inter-Bold': require('../assets/fonts/Inter_28pt-Bold.ttf'),
+        "Inter-Regular": require("../assets/fonts/Inter_28pt-Regular.ttf"),
+        "Inter-Bold": require("../assets/fonts/Inter_28pt-Bold.ttf"),
       });
       setFontsLoaded(true);
     }

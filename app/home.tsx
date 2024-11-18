@@ -212,7 +212,7 @@ export default function Home() {
           className="flex-row py-6"
         >
           <TouchableOpacity
-            onPress={() => router.push("/splinetest")}
+            onPress={() => router.push("/gamestart")}
             className="items-center mr-3"
           >
             <Image

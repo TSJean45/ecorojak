@@ -344,7 +344,7 @@ export default function LocationScreen() {
   });
 
   return (
-    <View style={{ flex: 1 }}>
+    <View className="flex-1">
       <Header title="Location" showBackButton={true} />
       <View
         className="flex-1 bg-transparent"
