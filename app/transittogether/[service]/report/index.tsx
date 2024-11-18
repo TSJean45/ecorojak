@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Header";
@@ -7,13 +7,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function Report() {
   const router = useRouter();
-  const { service } = useLocalSearchParams();
-  const [selectedRoute, setSelectedRoute] = useState(null);
+  const { service, selectedRoute, selectedStation } = useLocalSearchParams();
   const [status, setStatus] = useState("on-time");
   const [delay, setDelay] = useState("");
   const [crowdLevel, setCrowdLevel] = useState("normal");
   const [notes, setNotes] = useState("");
-  const [location, setLocation] = useState("");
 
   const statusOptions = [
     { id: "on-time", label: "On Time", icon: "checkmark-circle" },
@@ -29,22 +27,43 @@ export default function Report() {
   ];
 
   const handleSubmit = () => {
-    // TODO: Implement submission logic
-    console.log({
-      service,
-      selectedRoute,
-      status,
-      delay,
-      crowdLevel,
-      notes,
-      location,
-      timestamp: new Date(),
-    });
-    router.back();
+    // Validate required fields
+    if (!selectedRoute || !selectedStation) {
+      Alert.alert("Error", "Route and station information is missing");
+      return;
+    }
+
+    // Create report object
+    const report = {
+      id: Date.now().toString(), // temporary ID
+      route: selectedRoute,
+      station: selectedStation,
+      status: status,
+      delay: status === "delayed" ? delay : null,
+      crowdLevel: crowdLevel,
+      notes: notes,
+      timestamp: new Date().toLocaleString(),
+      upvotes: 0
+    };
+
+    // Here you would typically send this to your backend
+    console.log("Submitting report:", report);
+
+    // Show success message and navigate back
+    Alert.alert(
+      "Success",
+      "Thank you for your report!",
+      [
+        {
+          text: "OK",
+          onPress: () => router.back()
+        }
+      ]
+    );
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <Header
         title="Report Status"
         leftButton={{
@@ -54,29 +73,16 @@ export default function Report() {
       />
 
       <ScrollView className="flex-1 px-4">
-        {/* Route Selection */}
-        <TouchableOpacity
-          className="flex-row items-center justify-between p-4 bg-gray-50 rounded-xl mb-6"
-          onPress={() => router.push(`/transittogether/${service}/routes`)}
-        >
-          <View className="flex-row items-center">
-            <Ionicons name="map-outline" size={24} color="#666" />
-            <Text className="ml-2 text-gray-700">
-              {selectedRoute || "Select Route"}
-            </Text>
+        {/* Display Route and Station Info */}
+        <View className="bg-[#73D1C0] p-4 rounded-xl mb-6">
+          <View className="flex-row items-center mb-2">
+            <Ionicons name="map" size={24} color="white" />
+            <Text className="ml-2 text-white font-bold">{selectedRoute}</Text>
           </View>
-          <Ionicons name="chevron-forward" size={24} color="#666" />
-        </TouchableOpacity>
-
-        {/* Current Location */}
-        <View className="mb-6">
-          <Text className="text-lg font-semibold mb-2">Current Location</Text>
-          <TextInput
-            className="bg-gray-50 p-4 rounded-xl"
-            placeholder="Enter station or stop name"
-            value={location}
-            onChangeText={setLocation}
-          />
+          <View className="flex-row items-center">
+            <Ionicons name="location" size={24} color="white" />
+            <Text className="ml-2 text-white">{selectedStation}</Text>
+          </View>
         </View>
 
         {/* Status Selection */}
@@ -86,10 +92,10 @@ export default function Report() {
             {statusOptions.map((option) => (
               <TouchableOpacity
                 key={option.id}
-                className={`flex-row items-center mr-3 mb-2 px-4 py-2 rounded-full ${
+                className={`flex-row items-center mr-1 mb-2 px-4 py-2 rounded-full ${
                   status === option.id
-                    ? "bg-blue-500"
-                    : "bg-gray-100"
+                    ? "bg-green"
+                    : "border"
                 }`}
                 onPress={() => setStatus(option.id)}
               >
@@ -133,10 +139,10 @@ export default function Report() {
             {crowdOptions.map((option) => (
               <TouchableOpacity
                 key={option.id}
-                className={`flex-row items-center mr-3 mb-2 px-4 py-2 rounded-full ${
+                className={`flex-row items-center mr-2 mb-2 px-4 py-2 rounded-full ${
                   crowdLevel === option.id
-                    ? "bg-blue-500"
-                    : "bg-gray-100"
+                    ? "bg-green"
+                    : "border"
                 }`}
                 onPress={() => setCrowdLevel(option.id)}
               >
@@ -163,7 +169,7 @@ export default function Report() {
         <View className="mb-6">
           <Text className="text-lg font-semibold mb-2">Additional Notes</Text>
           <TextInput
-            className="bg-gray-50 p-4 rounded-xl"
+            className="border p-4 rounded-xl"
             placeholder="Any additional information..."
             value={notes}
             onChangeText={setNotes}
@@ -174,7 +180,7 @@ export default function Report() {
 
         {/* Submit Button */}
         <TouchableOpacity
-          className="bg-blue-500 p-4 rounded-xl mb-6"
+          className="bg-green p-3 rounded-xl mb-6"
           onPress={handleSubmit}
         >
           <Text className="text-white text-center font-semibold text-lg">
@@ -182,6 +188,6 @@ export default function Report() {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

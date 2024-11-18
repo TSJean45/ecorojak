@@ -56,6 +56,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-confetti": "^0.1.0",
     "react-native-config": "^1.5.3",
     "react-native-draggable": "^3.3.0",
     "react-native-element-dropdown": "^2.12.2",

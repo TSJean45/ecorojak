@@ -123,7 +123,8 @@ export default function Impact() {
   };
 
   React.useEffect(() => {
-    const timer = setTimeout(updateLinePositions, 1000);
+    updateLinePositions();
+    const timer = setTimeout(updateLinePositions, 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -198,7 +199,7 @@ export default function Impact() {
               <View className="flex-row mb-10 z-10 w-full">
                 <View className="flex-1" />
                 <View className="flex-1 items-center">
-                  <TouchableOpacity ref={buttonRefs.midCenter2} disabl ed={true}>
+                  <TouchableOpacity ref={buttonRefs.midCenter2} disabled={true}>
                     <Image
                       source={require("@/assets/images/lock-level.png")}
                       className="w-24 h-24"
@@ -220,6 +221,7 @@ export default function Impact() {
               <TouchableOpacity
                 ref={buttonRefs.bottomCenter1}
                 className="mb-10 z-10"
+                onPress={() => router.push("/impact/quiz/level2")}
               >
                 <Image
                   source={require("@/assets/images/2-level.png")}
@@ -228,7 +230,11 @@ export default function Impact() {
                 />
               </TouchableOpacity>
 
-              <TouchableOpacity ref={buttonRefs.bottomCenter2} className="z-10">
+              <TouchableOpacity
+                ref={buttonRefs.bottomCenter2}
+                className="z-10"
+                onPress={() => router.push("/impact/quiz/level1")}
+              >
                 <Image
                   source={require("@/assets/images/1-level.png")}
                   className="w-24 h-24"

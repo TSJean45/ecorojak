@@ -220,7 +220,7 @@ export default function Home() {
               className="w-16 h-16"
             />
             <Text className="text-xs font-bold mt-1 text-center">
-              splinetest
+              EcoRoll
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
