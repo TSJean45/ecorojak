@@ -47,7 +47,7 @@ export default function Results() {
         <Image
           source={{ uri: `data:image/jpeg;base64,${imageBase64}` }}
           className="w-full h-full"
-          resizeMode="stretch"
+          resizeMode="cover"
         />
         
         {/* Navigation Arrows */}
